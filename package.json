@@ -1,0 +1,29 @@
+{
+  "name": "coc",
+  "version": "1.0.0",
+  "description": "clock of change api",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server"
+  },
+  "author": "Sebastian Koch",
+  "license": "GPL-2.0",
+  "repository": "https://team.human-connection.org/bitbucket/scm/coc/clock-of-change-api.git",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.7",
+    "email-templates": "^3.1.8",
+    "express": "^4.16.2",
+    "formidable": "^1.1.1",
+    "moment": "^2.19.3",
+    "mysql": "^2.15.0",
+    "nodemailer": "^4.4.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "q": "^1.5.1",
+    "sharp": "^0.20.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
