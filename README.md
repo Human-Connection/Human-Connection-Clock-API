@@ -1,5 +1,6 @@
 # Clock of Change - API Server (Backend)
 
+
 This repository contains the API Server - or in other terms Backend - of the Clock of Change.
 
 To find out more about the Clock of Change and Human Connection - the network behind it - visit https://human-connection.org/en/.
@@ -18,21 +19,71 @@ All routes reside in /core/restapi.js
 
 **PROJECT STRUCTURE / DIRECTORIES**
 
+* server.js: The starting point for this Node.js application which starts the server
 * core/: The core directory contains the most important files of the project like database, mailer, router and main controller
-* core/restapi.js: All routes can be found here
+* core/entryController.js: Is the main controller for all the requests
+* core/restapi.js: All routes can be found here, they will also be listed further down
 * mails/: The mails directory holds the mail templates
-* public/: The public folder is not used for now
+* public/: The public directory is not used for now
 
 
 **DATABASE**
 
-We use mysql for the COC API and right now we have 2 tables entries and apikeys
+We use MySQL for the COC API as our relational database. 
+Currently all of the database related code can be found in the `core/db.js` file.
+This includes the credentials for the database (host, user, password and db name) and can be changed in this file.
+
+and right now we have 2 tables entries and apikeys
+
+**MAILER**
+
+The code related to the mail system can be found in the file `core/mailer.js`.
+For the mailer to work the smtp credentials need to be changed in this file as well.
+Then the mailer will work and use the mail templates from `mails/entry/`
 
 
 ## Installation
-...
+
+**PREREQUESITES**
+
+Before starting the installation you need to make sure you have the following tools installed:
+* Git: You need to have Git installed. You can check this in the console with `git --help`. For installation instructions visit https://git-scm.com/
+* Node.js: You need to have Node.js installed. You can check this in the console with `node -v`. For installation instructions visit https://nodejs.org/en/
+* Npm: You need to have npm installed. You can check this in the console with `npm -v`. For installation instructions head to https://www.npmjs.com/get-npm
+
+**INSTALLATION**
+
+1. First you need to clone the git repository of the Clock of Change API. Head to a directory where you want the git repository to reside
+and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-API.git` to clone the repository to this directory.
+2. Go to the newly created Clock-of-Change-API directory (`cd Clock-of-Change-API` in the console) and run `npm install`.
+Now all the dependencies should install.
+3. Edit the file `core/db.js` and add your MySQL credentials (host, user, password, database name). 
+4. Create the tables - ADD LATER
+5. Edit the file `core/mailer.js` and add your smtp credentials (host, user, password)
+
+Now the Clock of Change API server is ready to tick.
 
 ## Usage
+
+**START THE SERVER**
+
+In the base Clock-of-Change-API directory run
+
+`npm run start`
+
+in the console to start the Clock of Change API server.
+This will start Nodemon and the Node.js server, which will start listening for and processing requests on `default port 1337`.
+
+**MAKE REQUESTS**
+
+Pro Tip: If you don't already have it: Get [Postman](https://www.getpostman.com/)! This amazing makes working with APIs a bliss ❤
+
+When using the default port 1337 (which you do if you haven't changed it in server.js), you can send requests to the Clock of Change API to `http://127.0.0.1:1337`.
+
+**ROUTES**
+
+List of routes / endpoints
+
 **AUTHENTICATION**
 
 to authenticate simply send API-Key in each requests headers
@@ -67,3 +118,21 @@ GET http://127.0.0.1/entries
     - requires auth
     - returns {success : true, results : out, totalCount : results.length, page : offset}
     - return {success : false, message : "error"}
+
+
+```
+       _____
+    _.'_____`._
+  .'.-'  12 `-.`.
+ /,' 11      1 `.\
+// 10           2 \\
+;;                 ::
+|| 9  ---O-----  3 ||
+::                 ;;
+\ 8            4  //
+ \`. 7       5 ,'/
+ '.`-. __6__ .-'.'
+   ((-._____.-))
+   _))       ((_
+  '--'  COC  '--'
+```
