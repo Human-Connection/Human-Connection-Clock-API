@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db1
+
+  app:
+    build: .
+      #dockerfile: Dockerfile-dev
+    #  context: .
+    command: npm run start
+    volumes:
+      - "./src:/home/node/app/src"
+    ports:
+      - 1337:1337
+    environment:
+      - DB_HOST=db:3306
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=root
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db
