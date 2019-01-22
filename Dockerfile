@@ -1,6 +1,3 @@
-###############################################################################
-# Step 1 : Builder image
-#
 FROM node:11
 
 # Set Node environtment
@@ -13,7 +10,7 @@ WORKDIR /home/node/app
 COPY . .
 
 # Install dependencies from package.json
-RUN npm install --silent
+RUN npm install --quiet --no-warnings
 
 # Expose port from container so host can access 1337
 EXPOSE 1337

@@ -20,3 +20,5 @@ services:
       - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db
+    command: "npm run start"
+    
