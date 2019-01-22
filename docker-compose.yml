@@ -7,13 +7,10 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: db1
 
-  app:
-    build: .
-      #dockerfile: Dockerfile-dev
-    #  context: .
-    command: npm run start
-    volumes:
-      - "./src:/home/node/app/src"
+  coc-api:
+    image: clock-of-change-api
+    build:
+      context: .
     ports:
       - 1337:1337
     environment:

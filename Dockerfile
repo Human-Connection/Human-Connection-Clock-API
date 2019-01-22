@@ -13,11 +13,7 @@ WORKDIR /home/node/app
 COPY . .
 
 # Install dependencies from package.json
-RUN npm install --quiet
+RUN npm install --silent
 
-# Expose port from container so host can access 3000
-EXPOSE 3000
+# Expose port from container so host can access 1337
 EXPOSE 1337
-
-# Start the app
-#CMD npm start
