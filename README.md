@@ -70,7 +70,7 @@ In the base Clock-of-Change-API directory run
 `npm run start`
 
 in the console to start the Clock of Change API server.
-This will start Nodemon and the Node.js server, which will start listening for and processing requests on `default port 1337`.
+This will start Nodemon and the Node.js server, which will start listening for and processing requests at [http://localhost:1337](http://localhost:1337).
 
 **MAKE REQUESTS**
 
