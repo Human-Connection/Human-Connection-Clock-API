@@ -11,6 +11,9 @@ services:
     image: clock-of-change-api
     build:
       context: .
+    volumes:
+      - ".:/home/node/coc-api"
+      - "/home/node/coc-api/node_modules"
     ports:
       - 1337:1337
     environment:
@@ -21,4 +24,3 @@ services:
     depends_on:
       - db
     command: "npm run start"
-    

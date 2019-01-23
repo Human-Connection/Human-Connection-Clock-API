@@ -4,10 +4,13 @@ FROM node:11
 #ENV NODE_ENV=development
 
 # Switch to working directory
-WORKDIR /home/node/app
+WORKDIR /home/node/coc-api
 
 # Copy contents of local folder to `WORKDIR`
 COPY . .
+
+# Install nodemon globally
+RUN npm install --global nodemon
 
 # Install dependencies from package.json
 RUN npm install --quiet --no-warnings
