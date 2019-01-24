@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: db1
+
+  coc-api:
+    image: clock-of-change-api
+    build:
+      context: .
+    volumes:
+      - ".:/home/node/coc-api"
+      - "/home/node/coc-api/node_modules"
+    ports:
+      - 1337:1337
+    environment:
+      - DB_HOST=db:3306
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=root
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db
+    command: "npm run start"

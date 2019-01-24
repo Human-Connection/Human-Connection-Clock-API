@@ -4,7 +4,7 @@
   "description": "clock of change api",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon -L server.js"
   },
   "author": "Sebastian Koch",
   "license": "GPL-2.0",
