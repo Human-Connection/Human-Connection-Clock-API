@@ -11,7 +11,6 @@ module.exports = function(app) {
     app.route('/entries/verify/:k').get(entryController.verifyEntry);
 
     // intercept request and check for api key
-
     app.use((req, res, next) => {
         let apiKey = req.get('API-Key');
         db.isValidApiKey(apiKey, function(results, err){
