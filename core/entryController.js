@@ -13,43 +13,43 @@ exports.getAll = function(req, res) {
         active = req.query.isActive || 1;
     db.getEntries(limit, offset, active, function(results, err){
         if(!err){
-             // format output where required
-             let out = [];
-             results.forEach(function(item){
-                 let obj = {};
+            // format output where required
+            let out = [];
+            results.forEach(function(item){
+                let obj = {};
 
-                 obj.id              = item.id;
-                 obj.email           = item.email;
-                 obj.firstname       = item.firstname;
-                 obj.lastname        = item.lastname;
-                 obj.message         = item.message;
-                 obj.country         = item.country;
-                 obj.ipv4            = item.ipv4;
-                 obj.ipv6            = item.ipv6;
-                 obj.email_confirmed = item.email_confirmed;
-                 obj.confirm_key     = item.confirm_key;
-                 obj.status          = item.status;
-                 obj.anon            = item.anon;
-                 obj.created_at      = item.created_at;
-                 obj.updated_at      = item.updated_at;
-                 obj.confirmed_at    = item.confirmed_at;
+                obj.id              = item.id;
+                obj.email           = item.email;
+                obj.firstname       = item.firstname;
+                obj.lastname        = item.lastname;
+                obj.message         = item.message;
+                obj.country         = item.country;
+                obj.ipv4            = item.ipv4;
+                obj.ipv6            = item.ipv6;
+                obj.email_confirmed = item.email_confirmed;
+                obj.confirm_key     = item.confirm_key;
+                obj.status          = item.status;
+                obj.anon            = item.anon;
+                obj.created_at      = item.created_at;
+                obj.updated_at      = item.updated_at;
+                obj.confirmed_at    = item.confirmed_at;
 
-                 if(item.image !== ''){
-                   obj.image = "https://" + req.hostname + "/uploads/"+item.image;
-                 }else{
-                     obj.image = '';
-                 }
+                if(item.image !== ''){
+                    obj.image = "https://" + req.hostname + "/uploads/"+item.image;
+                }else{
+                    obj.image = '';
+                }
 
 
-                 out.push(obj);
-             });
+                out.push(obj);
+            });
 
-             res.status(200).json({
-                 success : true,
-                 results : out,
-                 totalCount : results.length,
-                 page : offset
-             });
+            res.status(200).json({
+                success : true,
+                results : out,
+                totalCount : results.length,
+                page : offset
+            });
         }else{
             res.status(400).json({success : false, message : "error"});
         }
@@ -57,19 +57,19 @@ exports.getAll = function(req, res) {
 };
 
 exports.toggleStatus = function(req, res){
-      let form = new formidable.IncomingForm();
-      form.parse(req, function (err, fields) {
-          console.log(fields.id)
-            if(fields && fields.id !== undefined){
-                db.toggleEntryStatus(fields.id, fields.state, function(results, err){
-                      if(!err){
-                        res.status(200).json({success : true, message : "toggled status"});
-                      }else{
-                          res.status(400).json({success : false, message : "error"});
-                      }
-                })
-            }
-      });
+    let form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields) {
+
+        if(fields && fields.id !== undefined){
+            db.toggleEntryStatus(fields.id, fields.state, function(results, err){
+                if(!err){
+                    res.status(200).json({success : true, message : "toggled status"});
+                }else{
+                    res.status(400).json({success : false, message : "error"});
+                }
+            })
+        }
+    });
 };
 
 exports.getCount = function(req, res) {
@@ -87,14 +87,14 @@ exports.getCount = function(req, res) {
 exports.verifyEntry = function(req, res) {
     db.verifyEntry(req.params.k, function(results, err){
         if(!err){
-          db.getUserByHash(req.params.k, function(results, err){
-            if(!err){
-              mailer.sendVerifySuccess({email : results[0].email, firstname : results[0].firstname});
-              res.redirect('https://human-connection.org/uhr-des-wandels/?ns=t');
-            }
-          });
+            db.getUserByHash(req.params.k, function(results, err){
+                if(!err){
+                    mailer.sendVerifySuccess({email : results[0].email, firstname : results[0].firstname});
+                    res.redirect('https://human-connection.org/uhr-des-wandels/?ns=t');
+                }
+            });
         }else{
-          res.redirect('https://human-connection.org/uhr-des-wandels/?ns=f');
+            res.redirect('https://human-connection.org/uhr-des-wandels/?ns=f');
         }
     });
 };
@@ -180,13 +180,13 @@ exports.createEntry = function(req, res) {
             fields["ipv4"]  = req.ip;
 
             if(hasFile){
-              fields["image"] = hasFile ? files[0].path.replace('uploads/', '') : '';
+                fields["image"] = hasFile ? files[0].path.replace('uploads/', '') : '';
 
-              let newFile = resize(files[0].path, 200, 200);
-              fs.unlinkSync(files[0].path);
-              newFile.toFile('uploads/'+fields["image"], (err, info) => {});
+                let newFile = resize(files[0].path, 200, 200);
+                fs.unlinkSync(files[0].path);
+                newFile.toFile('uploads/'+fields["image"], (err, info) => {});
             }else{
-              fields["image"] = '';
+                fields["image"] = '';
             }
 
             let hash = crypto.randomBytes(32).toString('hex');
@@ -194,14 +194,14 @@ exports.createEntry = function(req, res) {
 
             // save to db
             db.saveEntry(fields, function(err, results){
-              if(!err){
-                // send verification email
-                mailer.sendVerificationMail(hash, {email : fields.email, firstname : fields.firstname});
+                if(!err){
+                    // send verification email
+                    mailer.sendVerificationMail(hash, {email : fields.email, firstname : fields.firstname});
 
-                res.status(200).json({success : true});
-              }else{
-                res.status(400).json({success : false, message : "error"});
-              }
+                    res.status(200).json({success : true});
+                }else{
+                    res.status(400).json({success : false, message : "error"});
+                }
             });
         }
     });

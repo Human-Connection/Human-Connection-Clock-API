@@ -21,14 +21,14 @@ exports.toggleEntryStatus = function(id, state, callback){
         // 1 = confirmed | 2 = removed
         let sql;
         if(state === '1' || state === '2'){
-          sql  = "UPDATE entries SET status = "+state+" WHERE id = "+id;
+            sql  = "UPDATE entries SET status = ? WHERE id = ?";
         }else{
-          callback({}, false);
-          return;
+            callback({}, false);
+            return;
         }
 
         // make the query
-        connection.query(sql, function(err, results) {
+        connection.query(sql, [state, id], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
@@ -39,12 +39,11 @@ exports.toggleEntryStatus = function(id, state, callback){
 exports.isValidApiKey = function(secret, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
-        let sql  = "SELECT valid from apikeys WHERE secret = '"+secret+"';";
 
-        console.log(sql);
+        let sql  = "SELECT valid from apikeys WHERE secret = '?';";
 
         // make the query
-        connection.query(sql, function(err, results) {
+        connection.query(sql, [secret], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
@@ -57,15 +56,13 @@ exports.getEntries = function(limit, offset, active, callback){
         if(err) { console.log(err); callback(true); return; }
         let sql = '';
         if(active === '0'){
-            sql  = "SELECT * FROM entries ORDER BY ID DESC LIMIT "+limit+" OFFSET "+offset+";";
+            sql  = "SELECT * FROM entries ORDER BY ID DESC LIMIT ? OFFSET ?;";
         }else{
-            sql = "SELECT * FROM entries WHERE email_confirmed = 1 AND status = 1 ORDER BY ID DESC LIMIT "+limit+" OFFSET "+offset+";";
+            sql = "SELECT * FROM entries WHERE email_confirmed = 1 AND status = 1 ORDER BY ID DESC LIMIT ? OFFSET ?;";
         }
 
-        console.log(sql);
-
         // make the query
-        connection.query(sql, function(err, results) {
+        connection.query(sql, [limit, offset], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
@@ -75,11 +72,12 @@ exports.getEntries = function(limit, offset, active, callback){
 
 exports.getUserByHash = function(hash, callback){
     pool.getConnection(function(err, connection) {
-        if(err) { console.log(err); callback(true); return; }
-        let sql  = "SELECT email, firstname from entries WHERE confirm_key = '"+hash+"';";
+        if (err) { console.log(err); callback(true); return; }
+
+        let sql  = "SELECT email, firstname from entries WHERE confirm_key = '?';";
 
         // make the query
-        connection.query(sql, function(err, results) {
+        connection.query(sql, [hash], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
@@ -90,12 +88,12 @@ exports.getUserByHash = function(hash, callback){
 exports.verifyEntry = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
-        let sql  = "UPDATE entries set email_confirmed = 1, confirmed_at = "+moment().valueOf()+" WHERE";
-            sql += " confirm_key = '"+hash+"' AND";
-            sql += " confirmed_at is null;";
+
+        let sql  = "UPDATE entries set email_confirmed = 1, confirmed_at = ? "
+            + "WHERE  confirm_key = '?' AND  confirmed_at is null;";
 
         // make the query
-        connection.query(sql, function(err, results) {
+        connection.query(sql, [moment().valueOf(), hash], function(err, results) {
             connection.release();
             if(err || results.affectedRows < 1) { callback(results, true); return; }
             callback(results, false);
@@ -106,6 +104,7 @@ exports.verifyEntry = function(hash, callback){
 exports.getCount = function(callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
+
         let sql  = "SELECT count(*) as cnt FROM entries WHERE email_confirmed > 0 AND status < 2 AND country != '';";
 
         // make the query
@@ -122,45 +121,51 @@ exports.saveEntry = function(fields, callback){
         if(err) { console.log(err); callback(true); return; }
         let data = prepareEntry(fields);
 
-        let sqle  = "SELECT count(*) as cnt FROM entries WHERE email = '"+data.email+"';";
-        connection.query(sqle, function(err, results) {
+        let sqlEmailExists  = "SELECT count(*) as cnt FROM entries WHERE email = '?';";
+        connection.query(sqlEmailExists, [data.email], function(err, results) {
             if(!err) {
                 if(results[0]['cnt'] > 0){
                     callback(true);
                     return;
                 }else{
-                    let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, ipv4, image, created_at, updated_at, confirm_key, beta, newsletter, pax) VALUES (";
-                        sql += "'"+ data.firstname  + "', ";
-                        sql += "'"+ data.lastname   + "', ";
-                        sql += "'"+ data.email      + "', ";
-                        sql += "'"+ data.country    + "', ";
-                        sql += "'"+ data.message    + "', ";
-                        sql +=      data.anon       + ", ";
-                        sql += "'"+ data.ipv4       + "', ";
-                        sql += "'"+ data.image      + "', ";
-                        sql +=      data.created_at + ", ";
-                        sql +=      data.updated_at + ", ";
-                        sql += "'"+ data.randomHash + "', ";
-                        sql +=      data.beta       + ", ";
-                        sql +=      data.newsletter + ", ";
-                        sql +=      data.pax        + ");";
+                    let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, ipv4, image, "
+                        + "created_at, updated_at, confirm_key, beta, newsletter, pax) "
+                        + "VALUES ('?', '?', '?', '?', '?', ?, '?', '?', ?, ?, '?', ?, ?, ?);";
 
                     // run the query
-                    connection.query(sql, function(err, results) {
-                        connection.release();
-                        if(err) { callback(true); return; }
-                        callback(false, results);
-                    });
+                    connection.query(
+                        sql,
+                        [
+                            data.firstname,
+                            data.lastname,
+                            data.email,
+                            data.country,
+                            data.message,
+                            data.anon,
+                            data.ipv4,
+                            data.image,
+                            data.created_at,
+                            data.updated_at,
+                            data.randomHash,
+                            data.beta,
+                            data.newsletter,
+                            data.pax,
+                        ],
+                        function(err, results) {
+                            connection.release();
+                            if(err) { callback(true); return; }
+                            callback(false, results);
+                        }
+                    );
                 }
             }
         });
     });
 };
 
-/*
- * most fields get sanitized and escaped by node-mysql
+/**
  * this function is to prevent application errors
- **/
+ */
 function prepareEntry(data){
     let now = moment().valueOf();
 
