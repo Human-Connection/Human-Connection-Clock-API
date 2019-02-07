@@ -8,7 +8,7 @@ let pool = mysql.createPool({
     host              : process.env.MYSQL_HOST || 'localhost',
     user              : process.env.MYSQL_USER || '',
     password          : process.env.MYSQL_PASS || '',
-    database          : process.env.MYSQL_DB   || '',
+    database          : process.env.MYSQL_DB   || 'clock_of_change',
     //socketPath        : '/var/run/mysqld/mysqld.sock',
     connectionLimit   : 30,
     supportBigNumbers : true

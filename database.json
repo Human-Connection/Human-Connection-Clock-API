@@ -1,10 +1,10 @@
 {
   "dev": {
     "driver": "mysql",
-    "host": "localhost",
+    "host": {"ENV": "MYSQL_HOST"},
     "port": "3306",
-    "user": "",
-    "password": "",
-    "database": ""
+    "user": {"ENV": "MYSQL_USER"},
+    "password": {"ENV": "MYSQL_PASS"},
+    "database": {"ENV": "MYSQL_DB"}
   }
 }

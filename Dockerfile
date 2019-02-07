@@ -10,10 +10,13 @@ WORKDIR /home/node/coc-api
 COPY . .
 
 # Install nodemon globally
-RUN npm install --global nodemon
+RUN npm install --global nodemon db-migrate db-migrate-mysql
 
 # Install dependencies from package.json
 RUN npm install --quiet --no-warnings
+
+# Run database migrations
+#RUN db-migrate up
 
 # Expose port from container so host can access 1337
 EXPOSE 1337
