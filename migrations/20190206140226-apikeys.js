@@ -16,23 +16,6 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db, callback) {
   db.createTable('apikeys', {
-    entry_id: {
-      type: 'int',
-      unsigned: true,
-      length: 11,
-      notNull: true,
-      foreignKey: {
-        name: 'fk_entry_id',
-        table: 'entries',
-        rules: {
-          onDelete: 'RESTRICT',
-          onUpdate: 'RESTRICT'
-        },
-        mapping: {
-          entry_id: 'id'
-        }
-      }
-    },
     secret: {
       type: 'string',
       length: 100,

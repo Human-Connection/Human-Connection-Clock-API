@@ -55,7 +55,7 @@ exports.up = function(db, callback) {
     },
     ipv4: {
       type: 'string',
-      length: 15,
+      length: 40,
       defaultValue : null,
     },
     image: {
@@ -64,30 +64,43 @@ exports.up = function(db, callback) {
       defaultValue : null,
     },
     created_at: {
-      type: 'int',
-      length: 11,
+      type: 'string',
+      length: 15,
       defaultValue : null,
     },
     updated_at: {
-      type: 'int',
-      length: 11,
+      type: 'string',
+      length: 15,
       defaultValue : null,
     },
     confirm_key: {
       type: 'string',
-      length: 60,
+      length: 75,
       defaultValue : null,
     },
     beta: {
       type: 'int',
+      length: 1,
       defaultValue : 0,
     },
     newsletter: {
       type: 'int',
+      length: 1,
       defaultValue : 0,
     },
     pax: {
       type: 'int',
+      length: 1,
+      defaultValue : 0,
+    },
+    email_confirmed: {
+      type: 'int',
+      length: 1,
+      defaultValue : 0,
+    },
+    status: {
+      type: 'int',
+      length: 1,
       defaultValue : 0,
     },
   }, function(err) {
