@@ -9,6 +9,13 @@ services:
     ports:
       - 3306:3306
 
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+
   coc-api:
     image: clock-of-change-api
     build:
@@ -23,7 +30,11 @@ services:
       - MYSQL_DB=clock_of_change
       - MYSQL_USER=root
       - MYSQL_PASS=123456
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USER=mailer
+      - MAIL_PASS=123456
     depends_on:
       - db
+      - mailhog
     command: bash -c "sleep 5 && db-migrate up && npm run start"
-    #entrypoint: /docker-entrypoint.sh
