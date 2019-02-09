@@ -11,7 +11,7 @@ To find out more about the Clock of Change and Human Connection - the network be
 * Express.js: We use the [Express.js](https://expressjs.com/en/) framework - a Node.js framework to help build web applications
 * Nodemon: We use [Nodemon](https://nodemon.io/) for development - a handy replacement wrapper for Node.js that automatically restarts the application on file changes
 * MySQL: We use [MySQL](https://www.mysql.com) as our relational database of choice to store our data 
-
+* MailHog: We use [MailHog](https://github.com/mailhog/MailHog) to debug and preview the email communication
 
 ## Project Structure & Components
 
@@ -21,7 +21,9 @@ To find out more about the Clock of Change and Human Connection - the network be
 * core/: The core directory contains the most important files of the project like database, mailer, router and main controller
 * core/entryController.js: Is the main controller for all the requests
 * core/restapi.js: All routes can be found here, they will also be listed further down
+* documentation/: Documentation for the Clock of Change API
 * mails/: The mails directory holds the mail templates
+* migrations/: Migrations for the database
 * public/: The public directory is not used for now
 
 
@@ -31,7 +33,17 @@ We use MySQL for the COC API as our relational database.
 Currently all of the database related code can be found in the `core/db.js` file.
 This includes the credentials for the database (host, user, password and db name) and can be changed in this file.
 
-TODO: Add description of tables
+More conveniently the MySQL credentials can be provided via environment variables. Use the following environment variables:
+* MYSQL_HOST: Host address for the database
+* MYSQL_DB: Database Name
+* MYSQL_USER: MySQL User
+* MYSQL_PASS: MySQL Password
+
+Currently we have two tables:
+* apikeys: Contains the apikeys required to perform authorized API request
+* entries: Stores the user entries for the Clock of Change
+
+For more information about the tables, see the SQL dump of the tables at `documentation/tables.sql` .
 
 **MAILER**
 
@@ -39,15 +51,37 @@ The code related to the mail system can be found in the file `core/mailer.js`.
 For the mailer to work the smtp credentials need to be changed in this file as well.
 Then the mailer will work and use the mail templates from `mails/entry/`
 
+More conveniently the Mailer credentials can be provided via environment variables. Use the following environment variables:
+* MAIL_HOST: Host address for the mailer
+* MAIL_PORT: Port number for the mailer
+* MAIL_USER: Mailer User
+* MAIL_PASS: Mailer Password
+
+
+To debug and preview the emails, we use [MailHog](https://github.com/mailhog/MailHog). 
+When installing the Clock of Change without Docker, you have to install MailHog manually (see link for details).
+Then set the host address of MailHog in the Clock of Change API and use `1025` as the port number.
+Assuming MailHog is running on localhost, you can then debug the mails under [http://localhost:8025/](http://localhost:8025/).
 
 ## Installation
 
 **PREREQUESITES**
 
-Before starting the installation you need to make sure you have the following tools installed:
-* Git: You need to have Git installed. You can check this in the console with `git --help`. For installation instructions visit https://git-scm.com/
-* Node.js: You need to have Node.js installed. You can check this in the console with `node -v`. For installation instructions visit https://nodejs.org/en/
-* Npm: You need to have npm installed. You can check this in the console with `npm -v`. For installation instructions head to https://www.npmjs.com/get-npm
+Before starting the installation you need to make sure you have a recent version of [Git](https://git-scm.com/), [Nodejs](https://nodejs.org/en/) and [Npm](https://www.npmjs.com/get-npm) installed. 
+E.g. we have the following versions:
+```
+$ git --version
+git version 2.14.2.windows.1
+$ node --version
+v10.15.0
+$ npm --version
+4.6.0
+
+Git: 2.14.2
+Node: 10.15.0
+Npm: 4.6.0
+OS: Windows 10
+```
 
 **INSTALLATION**
 
