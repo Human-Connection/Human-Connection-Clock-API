@@ -54,7 +54,7 @@ The code related to the mail system can be found in the file `core/mailer.js`.
 For the mailer to work the smtp credentials need to be changed in this file as well.
 Then the mailer will work and use the mail templates from `mails/entry/`
 
-More conveniently the Mailer credentials can be provided via environment variables. Use the following environment variables:
+SMTP can be configured with the following environment variables:
 
 | Variable     | Description                   |
 |--------------|-------------------------------|
