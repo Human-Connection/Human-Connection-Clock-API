@@ -33,7 +33,7 @@ We use MySQL for the COC API as our relational database.
 Currently all of the database related code can be found in the `core/db.js` file.
 This includes the credentials for the database (host, user, password and db name) and can be changed in this file.
 
-More conveniently the MySQL credentials can be provided via environment variables. Use the following environment variables:
+MySQL DB can be configured with the following environment variables:
 
 | Variable     | Description                   |
 |--------------|-------------------------------|
