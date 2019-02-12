@@ -34,10 +34,13 @@ Currently all of the database related code can be found in the `core/db.js` file
 This includes the credentials for the database (host, user, password and db name) and can be changed in this file.
 
 More conveniently the MySQL credentials can be provided via environment variables. Use the following environment variables:
-* MYSQL_HOST: Host address for the database
-* MYSQL_DB: Database Name
-* MYSQL_USER: MySQL User
-* MYSQL_PASS: MySQL Password
+
+| Variable     | Description                   |
+|--------------|-------------------------------|
+| `MYSQL_HOST` | Host address for the database |
+| `MYSQL_DB`   | Database Name                 |
+| `MYSQL_USER` | MySQL User                    |
+| `MYSQL_PASS` | MySQL Password                |
 
 Currently we have two tables:
 * apikeys: Contains the apikeys required to perform authorized API request
@@ -52,10 +55,14 @@ For the mailer to work the smtp credentials need to be changed in this file as w
 Then the mailer will work and use the mail templates from `mails/entry/`
 
 More conveniently the Mailer credentials can be provided via environment variables. Use the following environment variables:
-* MAIL_HOST: Host address for the mailer
-* MAIL_PORT: Port number for the mailer
-* MAIL_USER: Mailer User
-* MAIL_PASS: Mailer Password
+
+| Variable     | Description                   |
+|--------------|-------------------------------|
+| `MAIL_HOST`  | Host address for the mailer   |
+| `MAIL_PORT`  | Port number for the mailer    |
+| `MAIL_USER`  | Mailer User                   |
+| `MAIL_PASS`  | Mailer Password               |
+
 
 
 To debug and preview the emails, we use [MailHog](https://github.com/mailhog/MailHog). 
