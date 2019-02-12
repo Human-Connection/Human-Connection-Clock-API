@@ -37,4 +37,4 @@ services:
     depends_on:
       - db
       - mailhog
-    command: bash -c "sleep 5 && db-migrate up && npm run start"
+    command: bash -c "wait-on tcp:db:3306 && db-migrate up && npm run start"
