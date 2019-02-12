@@ -8,12 +8,12 @@ let nodeMailer  = require('nodemailer'),
 function initTransporter(){
     if(transporter === undefined){
         transporter = nodeMailer.createTransport({
-            host: '',
-            port: 25,
+            host: process.env.MAIL_HOST || 'localhost',
+            port: process.env.MAIL_PORT || 25,
             secure: false,
             auth: {
-                user: '',
-                pass: ''
+                user: process.env.MAIL_USER || '',
+                pass: process.env.MAIL_PASS || ''
             }
         });
     }

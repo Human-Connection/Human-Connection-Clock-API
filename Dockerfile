@@ -9,8 +9,8 @@ WORKDIR /home/node/coc-api
 # Copy contents of local folder to `WORKDIR`
 COPY . .
 
-# Install nodemon globally
-RUN npm install --global nodemon
+# Install npm packages globally
+RUN npm install --global nodemon db-migrate db-migrate-mysql wait-on
 
 # Install dependencies from package.json
 RUN npm install --quiet --no-warnings

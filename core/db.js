@@ -8,7 +8,7 @@ let pool = mysql.createPool({
     host              : process.env.MYSQL_HOST || 'localhost',
     user              : process.env.MYSQL_USER || '',
     password          : process.env.MYSQL_PASS || '',
-    database          : process.env.MYSQL_DB   || '',
+    database          : process.env.MYSQL_DB   || 'clock_of_change',
     //socketPath        : '/var/run/mysqld/mysqld.sock',
     connectionLimit   : 30,
     supportBigNumbers : true
@@ -40,7 +40,7 @@ exports.isValidApiKey = function(secret, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT valid from apikeys WHERE secret = '?';";
+        let sql  = "SELECT * from apikeys WHERE secret = ?;";
 
         // make the query
         connection.query(sql, [secret], function(err, results) {
@@ -74,7 +74,7 @@ exports.getUserByHash = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if (err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT email, firstname from entries WHERE confirm_key = '?';";
+        let sql  = "SELECT email, firstname from entries WHERE confirm_key = ?;";
 
         // make the query
         connection.query(sql, [hash], function(err, results) {
@@ -121,7 +121,7 @@ exports.saveEntry = function(fields, callback){
         if(err) { console.log(err); callback(true); return; }
         let data = prepareEntry(fields);
 
-        let sqlEmailExists  = "SELECT count(*) as cnt FROM entries WHERE email = '?';";
+        let sqlEmailExists  = "SELECT count(*) as cnt FROM entries WHERE email = ?;";
         connection.query(sqlEmailExists, [data.email], function(err, results) {
             if(!err) {
                 if(results[0]['cnt'] > 0){
@@ -130,7 +130,7 @@ exports.saveEntry = function(fields, callback){
                 }else{
                     let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, ipv4, image, "
                         + "created_at, updated_at, confirm_key, beta, newsletter, pax) "
-                        + "VALUES ('?', '?', '?', '?', '?', ?, '?', '?', ?, ?, '?', ?, ?, ?);";
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
                     // run the query
                     connection.query(
@@ -153,6 +153,7 @@ exports.saveEntry = function(fields, callback){
                         ],
                         function(err, results) {
                             connection.release();
+                            console.log('this.sql', this.sql); //command/query
                             if(err) { callback(true); return; }
                             callback(false, results);
                         }

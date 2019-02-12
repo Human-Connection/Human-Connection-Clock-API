@@ -5,7 +5,16 @@ services:
     image: mysql:5
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: db1
+      MYSQL_DATABASE: clock_of_change
+    ports:
+      - 3306:3306
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
 
   coc-api:
     image: clock-of-change-api
@@ -17,10 +26,15 @@ services:
     ports:
       - 1337:1337
     environment:
-      - DB_HOST=db:3306
-      - DB_NAME=${MYSQL_DATABASE}
-      - DB_USER=root
-      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_HOST=db
+      - MYSQL_DB=clock_of_change
+      - MYSQL_USER=root
+      - MYSQL_PASS=123456
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USER=mailer
+      - MAIL_PASS=123456
     depends_on:
       - db
-    command: "npm run start"
+      - mailhog
+    command: bash -c "wait-on tcp:db:3306 && db-migrate up && npm run start"
