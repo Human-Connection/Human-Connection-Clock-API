@@ -62,7 +62,7 @@ exports.getEntries = function(limit, offset, active, callback){
         }
 
         // make the query
-        connection.query(sql, [limit, offset], function(err, results) {
+        connection.query(sql, [parseInt(limit), parseInt(offset)], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
