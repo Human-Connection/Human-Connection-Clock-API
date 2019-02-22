@@ -3,11 +3,16 @@ version: '3'
 services:
   db:
     image: mysql:5
+    volumes:
+      - coc_api_dbdata:/var/lib/mysql
+      - ./seed.sh:/usr/local/bin/seed.sh
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: clockofchangepw
       MYSQL_DATABASE: clock_of_change
+      MYSQL_USER: coc
+      MYSQL_PASSWORD: 123456
     ports:
-      - 3306:3306
+     - 3306:3306
 
   mailhog:
     container_name: mailhog
@@ -21,14 +26,14 @@ services:
     build:
       context: .
     volumes:
-      - ".:/home/node/coc-api"
-      - "/home/node/coc-api/node_modules"
+      - .:/home/node/coc-api
+      - /home/node/coc-api/node_modules
     ports:
       - 1337:1337
     environment:
       - MYSQL_HOST=db
       - MYSQL_DB=clock_of_change
-      - MYSQL_USER=root
+      - MYSQL_USER=coc
       - MYSQL_PASS=123456
       - MAIL_HOST=mailhog
       - MAIL_PORT=1025
@@ -38,3 +43,6 @@ services:
       - db
       - mailhog
     command: bash -c "wait-on tcp:db:3306 && db-migrate up && npm run start"
+
+volumes:
+  coc_api_dbdata:
