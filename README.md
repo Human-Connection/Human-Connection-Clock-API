@@ -107,6 +107,7 @@ To run the Docker version, follow these steps:
 and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-API.git` to clone the repository to this directory.
 2. Go to the newly created Clock-of-Change-API directory (`cd Clock-of-Change-API` in the console)
 3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time you should see the Clock of Change ticking.
+4. To create an initial API key and sample entries, run `docker-compose exec db seed.sh`. The initial API key you can use with your requests will have the value `secret`.
 
 Now the Clock of Change API server is ready for usage at [http://127.0.0.1:1337](http://127.0.0.1:1337)
 
