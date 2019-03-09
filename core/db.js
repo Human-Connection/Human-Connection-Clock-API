@@ -90,7 +90,7 @@ exports.verifyEntry = function(hash, callback){
         if(err) { console.log(err); callback(true); return; }
 
         let sql  = "UPDATE entries set email_confirmed = 1, confirmed_at = ? "
-            + "WHERE  confirm_key = '?' AND  confirmed_at is null;";
+            + "WHERE  confirm_key = ? AND  confirmed_at is null;";
 
         // make the query
         connection.query(sql, [moment().valueOf(), hash], function(err, results) {
