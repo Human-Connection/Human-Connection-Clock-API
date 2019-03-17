@@ -1,18 +1,20 @@
-version: '3'
+version: '3.5'
 
 services:
-  db:
+  db_api:
     image: mysql:5
     volumes:
       - coc_api_dbdata:/var/lib/mysql
       - ./seed.sh:/usr/local/bin/seed.sh
+    ports:
+     - 3306:3306
+    networks:
+      - coc_network
     environment:
       MYSQL_ROOT_PASSWORD: clockofchangepw
       MYSQL_DATABASE: clock_of_change
       MYSQL_USER: coc
       MYSQL_PASSWORD: 123456
-    ports:
-     - 3306:3306
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   mailhog:
@@ -21,6 +23,8 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
+    networks:
+      - coc_network
 
   coc-api:
     image: clock-of-change-api
@@ -31,8 +35,10 @@ services:
       - /home/node/coc-api/node_modules
     ports:
       - 1337:1337
+    networks:
+      - coc_network
     environment:
-      - MYSQL_HOST=db
+      - MYSQL_HOST=db_api
       - MYSQL_DB=clock_of_change
       - MYSQL_USER=coc
       - MYSQL_PASS=123456
@@ -41,9 +47,13 @@ services:
       - MAIL_USER=mailer
       - MAIL_PASS=123456
     depends_on:
-      - db
+      - db_api
       - mailhog
-    command: bash -c "wait-on tcp:db:3306 && db-migrate up && npm run start"
+    command: bash -c "wait-on tcp:db_api:3306 && db-migrate up && npm run start"
 
 volumes:
   coc_api_dbdata:
+
+networks:
+  coc_network:
+    name: coc_network
