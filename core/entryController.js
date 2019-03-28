@@ -108,7 +108,7 @@ exports.createEntry = function(req, res) {
         requiredFields  = ['email', 'firstname', 'anon', 'message'],
         allowedFields   = ['email', 'firstname', 'lastname', 'anon', 'message', 'country', 'beta', 'newsletter', 'pax'];
 
-    form.uploadDir      = './uploads/';
+    form.uploadDir      =  __dirname + '/../uploads/';
     form.keepExtensions = true;
     form.maxFields      = 5;
     form.maxFieldsSize  = 2 * 1024 * 1024;
