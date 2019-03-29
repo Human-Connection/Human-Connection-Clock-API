@@ -11,7 +11,7 @@ const app = express();
 
 // config
 app.set('view engine', 'ejs');
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
