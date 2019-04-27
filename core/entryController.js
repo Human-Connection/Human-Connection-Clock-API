@@ -15,7 +15,7 @@ exports.getAll = function(req, res) {
     filter['limit'] = req.query.limit  || 10;
     filter['offset'] = req.query.offset || 0;
     filter['active'] = req.query.isActive || 1;
-    filter['orderByDate'] = (req.query.sortByDate === ODER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
+    filter['orderByDate'] = (req.query.orderByDate === ODER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
 
     db.getEntries(filter, function(results, err){
         if(!err){
