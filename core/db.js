@@ -59,12 +59,12 @@ exports.getEntries = function(filter, callback){
             return;
         }
 
-        let sql = "SELECT * FROM entries";
+        let sql = 'SELECT * FROM entries';
 
         if (filter['active'] !== '0') {
             sql += ' WHERE email_confirmed = 1 AND status = 1';
         }
-        filter['orderByDate'] = 'asc';
+
         let orderByDate = filter['orderByDate'] === 'asc' ? 'ASC' : 'DESC';
 
         sql += ' ORDER BY ID ' + orderByDate + ' LIMIT ? OFFSET ?;';

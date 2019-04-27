@@ -12,9 +12,9 @@ exports.getAll = function(req, res) {
           ORDER_BY_DATE_DESC = 'desc';
 
     let filter = {};
-    filter['limit'] = req.query.limit  || 10;
-    filter['offset'] = req.query.offset || 0;
-    filter['active'] = req.query.isActive || 1;
+    filter['limit']       = req.query.limit  || 10;
+    filter['offset']      = req.query.offset || 0;
+    filter['active']      = req.query.isActive || 1;
     filter['orderByDate'] = (req.query.orderByDate === ODER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
 
     db.getEntries(filter, function(results, err){
