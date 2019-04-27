@@ -51,18 +51,26 @@ exports.isValidApiKey = function(secret, callback){
     });
 };
 
-exports.getEntries = function(limit, offset, active, callback){
+exports.getEntries = function(filter, callback){
     pool.getConnection(function(err, connection) {
-        if(err) { console.log(err); callback(true); return; }
-        let sql = '';
-        if(active === '0'){
-            sql  = "SELECT * FROM entries ORDER BY ID DESC LIMIT ? OFFSET ?;";
-        }else{
-            sql = "SELECT * FROM entries WHERE email_confirmed = 1 AND status = 1 ORDER BY ID DESC LIMIT ? OFFSET ?;";
+        if(err) {
+            console.log(err);
+            callback(true);
+            return;
         }
 
+        let sql = "SELECT * FROM entries";
+
+        if (filter['active'] !== '0') {
+            sql += ' WHERE email_confirmed = 1 AND status = 1';
+        }
+        filter['orderByDate'] = 'asc';
+        let orderByDate = filter['orderByDate'] === 'asc' ? 'ASC' : 'DESC';
+
+        sql += ' ORDER BY ID ' + orderByDate + ' LIMIT ? OFFSET ?;';
+
         // make the query
-        connection.query(sql, [parseInt(limit), parseInt(offset)], function(err, results) {
+        connection.query(sql, [parseInt(filter['limit']), parseInt(filter['offset'])], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
