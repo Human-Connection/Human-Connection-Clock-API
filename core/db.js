@@ -61,8 +61,12 @@ exports.getEntries = function(filter, callback){
 
         let sql = 'SELECT * FROM entries';
 
-        if (filter['active'] !== '0') {
+        if (filter['active'] === 1) {
             sql += ' WHERE email_confirmed = 1 AND status = 1';
+        }
+
+        if (filter['profileImage'] === 1) {
+            sql += (filter['active'] === 1 ? ' AND' : ' WHERE') + ' image != \'\'';
         }
 
         let orderByDate = filter['orderByDate'] === 'asc' ? 'ASC' : 'DESC';
@@ -70,7 +74,7 @@ exports.getEntries = function(filter, callback){
         sql += ' ORDER BY ID ' + orderByDate + ' LIMIT ? OFFSET ?;';
 
         // make the query
-        connection.query(sql, [parseInt(filter['limit']), parseInt(filter['offset'])], function(err, results) {
+        connection.query(sql, [filter['limit'], filter['offset']], function(err, results) {
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
