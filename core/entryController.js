@@ -112,7 +112,7 @@ exports.createEntry = function(req, res) {
     form.keepExtensions = true;
     form.maxFields      = 5;
     form.maxFieldsSize  = 2 * 1024 * 1024;
-    console.log(form.uploadDir);
+
     // Send error message back to client.
     form.parse(req).on('field', function(field, value){
         // ensure only fields allowed get into db
