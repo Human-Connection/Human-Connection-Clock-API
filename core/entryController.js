@@ -112,7 +112,7 @@ exports.createEntry = function(req, res) {
     form.keepExtensions = true;
     form.maxFields      = 5;
     form.maxFieldsSize  = 2 * 1024 * 1024;
-
+    console.log(form.uploadDir);
     // Send error message back to client.
     form.parse(req).on('field', function(field, value){
         // ensure only fields allowed get into db
@@ -180,11 +180,11 @@ exports.createEntry = function(req, res) {
             fields["ipv4"]  = req.ip;
 
             if(hasFile){
-                fields["image"] = hasFile ? files[0].path.replace('uploads/', '') : '';
+                fields["image"] = files[0].path.replace(/^.*[\\\/]/, '');
 
                 let newFile = resize(files[0].path, 200, 200);
                 fs.unlinkSync(files[0].path);
-                newFile.toFile('uploads/'+fields["image"], (err, info) => {});
+                newFile.toFile(form.uploadDir + fields["image"], (err, info) => { });
             }else{
                 fields["image"] = '';
             }
