@@ -180,11 +180,11 @@ exports.createEntry = function(req, res) {
             fields["ipv4"]  = req.ip;
 
             if(hasFile){
-                fields["image"] = hasFile ? files[0].path.replace('uploads/', '') : '';
+                fields["image"] = files[0].path.replace(/^.*[\\\/]/, '');
 
                 let newFile = resize(files[0].path, 200, 200);
                 fs.unlinkSync(files[0].path);
-                newFile.toFile('uploads/'+fields["image"], (err, info) => {});
+                newFile.toFile(form.uploadDir + fields["image"], (err, info) => { });
             }else{
                 fields["image"] = '';
             }
