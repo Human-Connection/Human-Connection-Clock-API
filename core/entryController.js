@@ -8,10 +8,17 @@ let formidable     = require('formidable'),
     mailer         = require('./mailer');
 
 exports.getAll = function(req, res) {
-    let limit  = req.query.limit  || 10,
-        offset = req.query.offset || 0,
-        active = req.query.isActive || 1;
-    db.getEntries(limit, offset, active, function(results, err){
+    const ODER_BY_DATE_ASC = 'asc',
+          ORDER_BY_DATE_DESC = 'desc';
+
+    let filter = {};
+    filter['limit']       = parseInt(req.query.limit)  || 10;
+    filter['offset']      = parseInt(req.query.offset) || 0;
+    filter['active']      = parseInt(req.query.isActive) || 1;
+    filter['orderByDate'] = (req.query.orderByDate === ODER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
+    filter['profileImage'] = parseInt(req.query.profileImage) || 0;
+
+    db.getEntries(filter, function(results, err){
         if(!err){
             // format output where required
             let out = [];
@@ -40,7 +47,6 @@ exports.getAll = function(req, res) {
                     obj.image = '';
                 }
 
-
                 out.push(obj);
             });
 
@@ -48,7 +54,7 @@ exports.getAll = function(req, res) {
                 success : true,
                 results : out,
                 totalCount : results.length,
-                page : offset
+                page : filter['offset']
             });
         }else{
             res.status(400).json({success : false, message : "error"});
