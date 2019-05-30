@@ -8,14 +8,14 @@ let formidable     = require('formidable'),
     mailer         = require('./mailer');
 
 exports.getAll = function(req, res) {
-    const ODER_BY_DATE_ASC = 'asc',
+    const ORDER_BY_DATE_ASC = 'asc',
           ORDER_BY_DATE_DESC = 'desc';
 
     let filter = {};
     filter['limit']       = parseInt(req.query.limit)  || 10;
     filter['offset']      = parseInt(req.query.offset) || 0;
     filter['active']      = parseInt(req.query.isActive) || 1;
-    filter['orderByDate'] = (req.query.orderByDate === ODER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
+    filter['orderByDate'] = (req.query.orderByDate === ORDER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
 
     db.getEntries(filter, function(results, err){
