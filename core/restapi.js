@@ -26,4 +26,5 @@ module.exports = function(app) {
     app.route('/entries').post(entryController.createEntry);
     app.route('/entries/toggle').post(entryController.toggleStatus);
     app.route('/entries').get(entryController.getAll);
+    app.route('/countries').get(entryController.getCountries);
 };

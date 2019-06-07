@@ -128,6 +128,20 @@ exports.getCount = function(callback){
     });
 };
 
+exports.getCountries = function(callback){
+    pool.getConnection(function(err, connection) {
+        if(err) { console.log(err); callback(true); return; }
+
+        let sql  = "SELECT country, COUNT(id) AS number FROM entries WHERE country != '' GROUP BY country ORDER BY number DESC;";
+
+        connection.query(sql, function(err, results) {
+            connection.release();
+            if(err) { callback(results, true); return; }
+            callback(results, false);
+        });
+    });
+};
+
 exports.saveEntry = function(fields, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }

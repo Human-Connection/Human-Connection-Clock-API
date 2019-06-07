@@ -90,6 +90,19 @@ exports.getCount = function(req, res) {
     });
 };
 
+exports.getCountries = function(req, res) {
+    db.getCountries(function(results, err){
+        if(!err){
+            res.status(200).json({
+                success : true,
+                countries : results
+            });
+        }else{
+            res.status(400).json({success : false, message : "error"});
+        }
+    });
+};
+
 exports.verifyEntry = function(req, res) {
     db.verifyEntry(req.params.k, function(results, err){
         if(!err){
