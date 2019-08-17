@@ -132,7 +132,7 @@ exports.getCountries = function(callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT country, COUNT(id) AS number FROM entries WHERE country != '' GROUP BY country ORDER BY number DESC;";
+        let sql  = "SELECT country, COUNT(id) AS number FROM entries WHERE email_confirmed > 0 AND status < 2 AND country != '' GROUP BY country ORDER BY number DESC;";
 
         connection.query(sql, function(err, results) {
             connection.release();
