@@ -124,6 +124,7 @@ exports.createEntry = function(req, res) {
         fields          = {},
         files           = [],
         errorFields     = [],
+        out             = {},
         requiredFields  = ['email', 'firstname', 'anon', 'message'],
         allowedFields   = ['email', 'firstname', 'lastname', 'anon', 'message', 'country', 'beta', 'newsletter', 'pax'];
 
@@ -148,6 +149,7 @@ exports.createEntry = function(req, res) {
 
                 if(value === undefined || value === ''){
                     errorFields.push(field);
+                    out[field] = "Missing required field";
                 }
             }
 
@@ -171,25 +173,18 @@ exports.createEntry = function(req, res) {
 
         // TODO: ensure valid email format
         if(requiredFields.length > 0 || typeError || sizeError || errorFields.length > 0){
-            let out = {success : false};
+            out ["success"] = false;
+            out['test'] = true;
             if(hasFile){
                 fs.unlinkSync(files[0].path);
             }
 
             if(typeError){
-                out["mimeError"] = "wrong filetype "+files[0].type
+                out["file"] = "Wrong filetype "+files[0].type
             }
 
             if(sizeError){
-                out["sizeError"] = "file size exceeded max size "+form.maxFieldsSize;
-            }
-
-            if(requiredFields.length > 0){
-                out["missingFields"] = requiredFields;
-            }
-
-            if(errorFields.length > 0){
-                out["fieldErrors"] = errorFields;
+                out["file"] = "File size exceeded max size of "+form.maxFieldsSize;
             }
 
             res.status(400).json(out);
@@ -219,7 +214,8 @@ exports.createEntry = function(req, res) {
 
                     res.status(200).json({success : true});
                 }else{
-                    res.status(400).json({success : false, message : "error"});
+                    console.log(err);
+                    res.status(400).json(Object.assign({success : false}, err));
                 }
             });
         }
