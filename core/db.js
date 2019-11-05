@@ -151,7 +151,7 @@ exports.saveEntry = function(fields, callback){
         connection.query(sqlEmailExists, [data.email], function(err, results) {
             if(!err) {
                 if(results[0]['cnt'] > 0){
-                    callback(true);
+                    callback({email: "Email address already exists"});
                     return;
                 }else{
                     let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, ipv4, image, "
@@ -180,7 +180,7 @@ exports.saveEntry = function(fields, callback){
                         function(err, results) {
                             connection.release();
                             console.log('this.sql', this.sql); //command/query
-                            if(err) { callback(true); return; }
+                            if(err) { callback({error: "Internal server error"}); return; }
                             callback(false, results);
                         }
                     );
