@@ -82,6 +82,31 @@ exports.getEntries = function(filter, callback){
     });
 };
 
+exports.getEntry = function(id, callback){
+    pool.getConnection(function(error, connection) {
+        if(error) {
+            console.log(error);
+            callback(true);
+            return;
+        }
+
+        let sql = 'SELECT * FROM entries WHERE id = ?';
+
+        connection.query(sql, [id], function(error, result) {
+            connection.release();
+            if(error) {
+                callback(result, error);
+                return;
+            }
+            if (!result || !result.length) {
+                callback(null, 'Entry with the specified id does not exist');
+                return;
+            }
+            callback(result, false);
+        });
+    });
+};
+
 exports.getUserByHash = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if (err) { console.log(err); callback(true); return; }
@@ -109,6 +134,27 @@ exports.verifyEntry = function(hash, callback){
             connection.release();
             if(err || results.affectedRows < 1) { callback(results, true); return; }
             callback(results, false);
+        });
+    });
+};
+
+exports.deleteEntry = function(id, callback){
+    pool.getConnection(function(error, connection) {
+        if(error) {
+            console.log(error);
+            callback(error);
+            return;
+        }
+        let sql = "DELETE FROM entries WHERE id = ?";
+
+        // make the query
+        connection.query(sql, [id], function(error) {
+            connection.release();
+            if(error) {
+                callback(error);
+                return;
+            }
+            callback(false);
         });
     });
 };
