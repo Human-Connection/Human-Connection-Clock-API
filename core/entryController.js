@@ -78,6 +78,27 @@ exports.toggleStatus = function(req, res){
     });
 };
 
+exports.deleteEntry = function(request, response){
+    if(request.params.id && request.params.id > 0){
+        db.getEntry(request.params.id, function(result, error){
+            if(!error){
+                db.deleteEntry(request.params.id, function(error){
+                    if(!error) {
+                        console.log("!error");
+                        response.status(200).json({success: true});
+                    } else{
+                        response.status(400).json({error: error});
+                    }
+                });
+            } else {
+                response.status(400).json({error: error});
+            }
+        });
+    } else {
+        response.status(400).json({error: "No entry id specified"});
+    }
+};
+
 exports.getCount = function(req, res) {
     db.getCount(function(results, err){
         if(!err){

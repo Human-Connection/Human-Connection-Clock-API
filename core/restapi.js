@@ -8,6 +8,7 @@ module.exports = function(app) {
     // non-auth routes
     // TODO: tmp until path can be changed
     app.route('/cube.php').get(entryController.getCount);
+    app.route('/count').get(entryController.getCount);
     app.route('/entries/verify/:k').get(entryController.verifyEntry);
 
     // intercept request and check for api key
@@ -27,4 +28,5 @@ module.exports = function(app) {
     app.route('/entries/toggle').post(entryController.toggleStatus);
     app.route('/entries').get(entryController.getAll);
     app.route('/countries').get(entryController.getCountries);
+    app.route('/delete/:id').get(entryController.deleteEntry);
 };
