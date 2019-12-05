@@ -20,7 +20,7 @@
     "formidable": "^1.1.1",
     "moment": "^2.19.3",
     "mysql": "^2.15.0",
-    "nodemailer": "^4.4.0",
+    "nodemailer": "^6.4.0",
     "nodemailer-smtp-transport": "^2.7.4",
     "q": "^1.5.1",
     "sharp": "^0.20.5"
