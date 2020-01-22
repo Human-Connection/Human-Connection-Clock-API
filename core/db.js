@@ -200,9 +200,9 @@ exports.saveEntry = function(fields, callback){
                     callback({email: "Email address already exists"});
                     return;
                 }else{
-                    let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, ipv4, image, "
+                    let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, image, "
                         + "created_at, updated_at, confirm_key, beta, newsletter, pax) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
                     // run the query
                     connection.query(
@@ -214,7 +214,6 @@ exports.saveEntry = function(fields, callback){
                             data.country,
                             data.message,
                             data.anon,
-                            data.ipv4,
                             data.image,
                             data.created_at,
                             data.updated_at,

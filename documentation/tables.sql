@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS `entries` (
   `country` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `anon` int(1) DEFAULT '0',
-  `ipv4` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated_at` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
