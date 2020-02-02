@@ -31,8 +31,6 @@ exports.getAll = function(req, res) {
                 obj.lastname        = item.lastname;
                 obj.message         = item.message;
                 obj.country         = item.country;
-                obj.ipv4            = item.ipv4;
-                obj.ipv6            = item.ipv6;
                 obj.email_confirmed = item.email_confirmed;
                 obj.confirm_key     = item.confirm_key;
                 obj.status          = item.status;
@@ -210,10 +208,6 @@ exports.createEntry = function(req, res) {
 
             res.status(400).json(out);
         }else{
-            // TODO: handle ipv6
-            // bundle required stuff into fields
-            fields["ipv4"]  = req.ip;
-
             if(hasFile){
                 fields["image"] = files[0].path.replace(/^.*[\\\/]/, '');
 
