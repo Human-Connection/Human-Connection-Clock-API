@@ -11,12 +11,32 @@ exports.getAll = function(req, res) {
     const ORDER_BY_DATE_ASC = 'asc',
           ORDER_BY_DATE_DESC = 'desc';
 
+    const orderByAcceptedAttributes = [
+        'id',
+        'email',
+        'firstname',
+        'lastname',
+        'country',
+        'email_confirmed',
+        'status',
+        'anon',
+        'created_at',
+        'confirmed_at',
+    ];
+
     let filter = {};
     filter['limit']       = parseInt(req.query.limit)  || 10;
     filter['offset']      = parseInt(req.query.offset) || 0;
-    filter['active']      = parseInt(req.query.isActive) || 1;
-    filter['orderByDate'] = (req.query.orderByDate === ORDER_BY_DATE_ASC) ?  ORDER_BY_DATE_ASC : ORDER_BY_DATE_DESC;
+    filter['active']      = parseInt(req.query.isActive) === 0 ? 0 : 1;
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
+
+    // 'orderBy' && 'order' are parameters from the WP admin backend for ordering the entries list
+    if (req.query.orderBy && orderByAcceptedAttributes.includes(req.query.orderBy)) {
+        if (req.query.order && (req.query.order === 'asc' || req.query.order === 'desc')) {
+            filter['orderBy'] = req.query.orderBy;
+            filter['order']   = req.query.order;
+        }
+    }
 
     db.getEntries(filter, function(results, err){
         if(!err){

@@ -69,9 +69,10 @@ exports.getEntries = function(filter, callback){
             sql += (filter['active'] === 1 ? ' AND' : ' WHERE') + ' image != \'\'';
         }
 
-        let orderByDate = filter['orderByDate'] === 'asc' ? 'ASC' : 'DESC';
+        let orderBy = filter['orderBy'] ? filter['orderBy'] : 'id';
+        let order   = filter['order'] ? filter['order'] : 'desc';
 
-        sql += ' ORDER BY ID ' + orderByDate + ' LIMIT ? OFFSET ?;';
+        sql += ' ORDER BY ' + orderBy + ' '+ order + ' LIMIT ? OFFSET ?;';
 
         // make the query
         connection.query(sql, [filter['limit'], filter['offset']], function(err, results) {
