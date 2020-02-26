@@ -17,7 +17,7 @@
     "ejs": "^2.5.7",
     "email-templates": "^3.1.8",
     "express": "^4.16.2",
-    "formidable": "^1.1.1",
+    "formidable": "^1.2.2",
     "moment": "^2.19.3",
     "mysql": "^2.15.0",
     "nodemailer": "^4.4.0",
