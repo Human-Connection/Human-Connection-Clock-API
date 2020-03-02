@@ -66,7 +66,19 @@ exports.getEntries = function(filter, callback){
         }
 
         if (filter['profileImage'] === 1) {
-            sql += (filter['active'] === 1 ? ' AND' : ' WHERE') + ' image != \'\'';
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' image != \'\'';
+        }
+
+        if (filter['confirmed'] === 'yes') {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email_confirmed = 1';
+        } else if (filter['confirmed'] === 'no') {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email_confirmed = 0';
+        }
+
+        if (filter['status'] === 'active' && filter['active'] !== 1) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 1';
+        } else if (filter['status'] === 'inactive' && filter['active'] !== 1) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 0';
         }
 
         let orderBy = filter['orderBy'] ? filter['orderBy'] : 'id';

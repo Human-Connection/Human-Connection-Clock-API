@@ -29,6 +29,8 @@ exports.getAll = function(req, res) {
     filter['offset']      = parseInt(req.query.offset) || 0;
     filter['active']      = parseInt(req.query.isActive) === 0 ? 0 : 1;
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
+    filter['confirmed'] = req.query.confirmed === 'yes' || req.query.confirmed === 'no' ? req.query.confirmed : 'all';
+    filter['status'] = req.query.status === 'active' || req.query.status === 'inactive' ? req.query.status : 'all';
 
     // 'orderBy' && 'order' are parameters from the WP admin backend for ordering the entries list
     if (req.query.orderBy && orderByAcceptedAttributes.includes(req.query.orderBy)) {
