@@ -120,7 +120,13 @@ exports.deleteEntry = function(request, response){
 };
 
 exports.getCount = function(req, res) {
-    db.getCount(function(results, err){
+    let filter = {};
+    filter['active']      = parseInt(req.query.isActive) === 0 ? 0 : 1;
+    filter['profileImage'] = parseInt(req.query.profileImage) || 0;
+    filter['confirmed'] = req.query.confirmed === 'yes' || req.query.confirmed === 'no' ? req.query.confirmed : 'all';
+    filter['status'] = req.query.status === 'active' || req.query.status === 'inactive' ? req.query.status : 'all';
+
+    db.getCount(filter, function(results, err){
         if(!err){
             // TODO switch to json when clocks have been adjusted to new API
             // res.status(200).json({success : true, count : results[0]['cnt']});

@@ -172,11 +172,33 @@ exports.deleteEntry = function(id, callback){
     });
 };
 
-exports.getCount = function(callback){
+exports.getCount = function(filter, callback){
+    console.log(filter);
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT count(*) as cnt FROM entries WHERE email_confirmed > 0 AND status < 2 AND country != '';";
+        // let sql  = "SELECT count(*) as cnt FROM entries WHERE email_confirmed > 0 AND status < 2 AND country != '';";
+        let sql = 'SELECT count(*) as cnt FROM entries';
+
+        if (filter['active'] === 1) {
+            sql += ' WHERE email_confirmed > 0 AND status < 2 AND country != \'\'';
+        }
+
+        if (filter['profileImage'] === 1) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' image != \'\'';
+        }
+
+        if (filter['confirmed'] === 'yes') {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email_confirmed = 1';
+        } else if (filter['confirmed'] === 'no') {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email_confirmed = 0';
+        }
+
+        if (filter['status'] === 'active' && filter['active'] !== 1) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 1';
+        } else if (filter['status'] === 'inactive' && filter['active'] !== 1) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 0';
+        }
 
         // make the query
         connection.query(sql, function(err, results) {
