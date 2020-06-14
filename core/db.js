@@ -62,7 +62,7 @@ exports.getEntries = function(filter, callback){
         let sql = 'SELECT * FROM entries';
 
         if (filter['active'] === 1) {
-            sql += ' WHERE email_confirmed = 1 AND status = 1';
+            sql += ' WHERE status = 1';
         }
 
         if (filter['profileImage'] === 1) {
@@ -181,7 +181,7 @@ exports.getCount = function(filter, callback){
         let sql = 'SELECT count(*) as cnt FROM entries';
 
         if (filter['active'] === 1) {
-            sql += ' WHERE email_confirmed > 0 AND status < 2 AND country != \'\'';
+            sql += ' WHERE status < 2 AND country != \'\'';
         }
 
         if (filter['profileImage'] === 1) {
