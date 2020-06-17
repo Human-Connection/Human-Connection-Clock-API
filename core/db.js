@@ -36,6 +36,26 @@ exports.toggleEntryStatus = function(id, state, callback){
     });
 };
 
+exports.toggleEmailConfirmed = function(id, state, callback){
+    pool.getConnection(function(err, connection) {
+        if(err) { console.log(err); callback(true); return; }
+        let sql;
+        if(parseInt(state) === 0 || parseInt(state) === 1){
+            sql  = "UPDATE entries SET email_confirmed = ? WHERE id = ?";
+        }else{
+            callback({}, false);
+            return;
+        }
+
+        // make the query
+        connection.query(sql, [state, id], function(err, results) {
+            connection.release();
+            if(err) { callback(results, true); return; }
+            callback(results, false);
+        });
+    });
+};
+
 exports.isValidApiKey = function(secret, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
