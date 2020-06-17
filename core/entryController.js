@@ -104,7 +104,7 @@ exports.toggleEmailConfirmed = function (req, res) {
 
         if (fields && fields.id !== undefined && parseInt(fields.id) > 0 && fields.state !== undefined &&
             (parseInt(fields.state) === 0 || parseInt(fields.state) === 1)) {
-            db.toggleEntryStatus(fields.id, fields.state, function (results, err) {
+            db.toggleEmailConfirmed(fields.id, fields.state, function (results, err) {
                 if (!err) {
                     res.status(200).json({success: true, message: 'toggled email confirmed'});
                 } else {
