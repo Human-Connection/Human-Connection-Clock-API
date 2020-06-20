@@ -194,6 +194,8 @@ exports.createEntry = function (req, res) {
         requiredFields = ['email', 'firstname', 'anon', 'message'],
         allowedFields = ['email', 'firstname', 'lastname', 'anon', 'message', 'country', 'beta', 'newsletter', 'pax'];
 
+    const messageMaxCharacters = 500;
+
     form.uploadDir = __dirname + '/../uploads/';
     form.keepExtensions = true;
     form.maxFields = 5;
@@ -220,6 +222,12 @@ exports.createEntry = function (req, res) {
             }
 
             fields[[field]] = value;
+        }
+        if (field === 'message') {
+            if ((String(value)).length > messageMaxCharacters) {
+                errorFields.push(field);
+                out[field] = 'Limit of ' + messageMaxCharacters + ' characters for this field exceeded';
+            }
         }
     }).on('file', function (field, file) {
         files.push({
