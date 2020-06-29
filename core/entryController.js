@@ -192,7 +192,7 @@ exports.createEntry = function (req, res) {
         files = [],
         errorFields = [],
         out = {},
-        requiredFields = ['email', 'firstname', 'anon', 'message'],
+        requiredFields = ['email', 'firstname', 'anon', 'country'],
         allowedFields = ['email', 'firstname', 'lastname', 'anon', 'message', 'country', 'beta', 'newsletter', 'pax'];
 
     form.uploadDir = __dirname + '/../uploads/';
