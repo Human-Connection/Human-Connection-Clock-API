@@ -261,13 +261,6 @@ exports.createEntry = function (req, res) {
                 out['message'] = 'Limit of 500 characters for this field exceeded';
             }
         }
-        if (field === 'anon') {
-            fields[[field]] = validator.toBoolean(validator.trim(value));
-            if (!validator.isBoolean(String(value))) {
-                errorFields.push('anon');
-                out['message'] = 'No valid value';
-            }
-        }
 
     }).on('file', function (field, file) {
         files.push({
