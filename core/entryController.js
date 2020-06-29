@@ -5,7 +5,8 @@ let formidable = require('formidable'),
     fs = require('fs'),
     crypto = require('crypto'),
     resize = require('./resize'),
-    mailer = require('./mailer');
+    mailer = require('./mailer'),
+    validator = require('validator');
 
 exports.getAll = function (req, res) {
     const ORDER_BY_DATE_ASC = 'asc',
@@ -194,8 +195,6 @@ exports.createEntry = function (req, res) {
         requiredFields = ['email', 'firstname', 'anon', 'message'],
         allowedFields = ['email', 'firstname', 'lastname', 'anon', 'message', 'country', 'beta', 'newsletter', 'pax'];
 
-    const messageMaxCharacters = 500;
-
     form.uploadDir = __dirname + '/../uploads/';
     form.keepExtensions = true;
     form.maxFields = 5;
@@ -223,12 +222,53 @@ exports.createEntry = function (req, res) {
 
             fields[[field]] = value;
         }
-        if (field === 'message') {
-            if ((String(value)).length > messageMaxCharacters) {
-                errorFields.push(field);
-                out[field] = 'Limit of ' + messageMaxCharacters + ' characters for this field exceeded';
+        if (field === 'firstname') {
+            fields[[field]] = validator.escape(validator.trim(value));
+            if (!validator.isLength(value, {min: 1, max: 200})) {
+                errorFields.push('firstname');
+                out['firstname'] = 'This field needs to have between 1 and 200 characters';
             }
         }
+        if (field === 'lastname') {
+            fields[[field]] = validator.escape(validator.trim(value));
+            if (!validator.isLength(value, {max: 200})) {
+                errorFields.push('lastname');
+                out['lastname'] = 'Limit of 200 characters for this field exceeded';
+            }
+        }
+        if (field === 'email') {
+            fields[[field]] = validator.escape(validator.trim(value));
+            if (!validator.isEmail(value)) {
+                errorFields.push('email');
+                out['email'] = 'No valid email address';
+            }
+            if (!validator.isLength(value, {max: 200})) {
+                errorFields.push('email');
+                out['message'] = 'Limit of 200 characters for this field exceeded';
+            }
+        }
+        if (field === 'country') {
+            fields[[field]] = validator.escape(validator.trim(value));
+            if (!validator.isISO31661Alpha2(value)) {
+                errorFields.push('country');
+                out['country'] = 'No valid country code';
+            }
+        }
+        if (field === 'message') {
+            fields[[field]] = validator.escape(validator.trim(value));
+            if (!validator.isLength(value, {max: 500})) {
+                errorFields.push('message');
+                out['message'] = 'Limit of 500 characters for this field exceeded';
+            }
+        }
+        if (field === 'anon') {
+            fields[[field]] = validator.toBoolean(validator.trim(value));
+            if (!validator.isBoolean(String(value))) {
+                errorFields.push('anon');
+                out['message'] = 'No valid value';
+            }
+        }
+
     }).on('file', function (field, file) {
         files.push({
             size: file.size,
