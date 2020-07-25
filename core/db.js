@@ -95,6 +95,10 @@ exports.getEntries = function(filter, callback){
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email_confirmed = 0';
         }
 
+        if (filter['country'] && filter['country'].length > 0) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' country = \'' + pool.escape(filter['country']) + '\'';
+        }
+
         if (filter['status'] === 'active' && filter['active'] !== 1) {
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 1';
         } else if (filter['status'] === 'inactive' && filter['active'] !== 1) {
