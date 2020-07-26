@@ -96,7 +96,7 @@ exports.getEntries = function(filter, callback){
         }
 
         if (filter['country'] && filter['country'].length > 0) {
-            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' country = \'' + pool.escape(filter['country']) + '\'';
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' country = ' + pool.escape(filter['country']);
         }
 
         if (filter['status'] === 'active' && filter['active'] !== 1) {
