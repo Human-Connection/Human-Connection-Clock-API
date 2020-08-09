@@ -196,6 +196,25 @@ exports.deleteEntry = function(id, callback){
     });
 };
 
+exports.deleteImage = function(id, callback){
+    pool.getConnection(function(err, connection) {
+        if(err) { console.log(err); callback(true); return; }
+
+        let sql  = "UPDATE entries set image = '' "
+            + "WHERE  id=?;";
+
+        connection.query(sql, [id], function(error) {
+            console.log(this.sql);
+            connection.release();
+            if(error) {
+                callback(error);
+                return;
+            }
+            callback(false);
+        });
+    });
+};
+
 exports.getCount = function(filter, callback){
     console.log(filter);
     pool.getConnection(function(err, connection) {

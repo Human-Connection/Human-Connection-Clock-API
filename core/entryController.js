@@ -140,6 +140,44 @@ exports.deleteEntry = function (request, response) {
     }
 };
 
+exports.deleteImage = function (request, response) {
+    if (request.params.id && request.params.id > 0) {
+        db.getEntry(request.params.id, function (result, error) {
+            if (!error && result) {
+                db.deleteImage(request.params.id, function (error) {
+                    if (!error) {
+                        const path = './uploads/' + result[0].image;
+                        try {
+                            if (fs.existsSync(path)) {
+                                //file exists
+                            }
+                        } catch(error) {
+                            response.status(400).json({error: error});
+                            return;
+                        }
+
+                        try {
+                            fs.unlinkSync(path);
+                        } catch (error) {
+                            response.status(400).json({error: error});
+                            return;
+                        }
+
+                        response.status(200).json({success: true});
+                    } else {
+                        console.log('error when deleting image');
+                        response.status(400).json({error: error});
+                    }
+                });
+            } else {
+                response.status(400).json({error: error});
+            }
+        });
+    } else {
+        response.status(400).json({error: 'No entry id specified'});
+    }
+};
+
 exports.getCount = function (req, res) {
     let filter = {};
     filter['active'] = parseInt(req.query.isActive) === 0 ? 0 : 1;
@@ -279,7 +317,6 @@ exports.createEntry = function (req, res) {
             sizeError = files[0].size > form.maxFieldsSize;
         }
 
-        // TODO: ensure valid email format
         if (requiredFields.length > 0 || typeError || sizeError || errorFields.length > 0) {
             out ['success'] = false;
             out['test'] = true;
