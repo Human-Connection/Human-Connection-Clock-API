@@ -30,4 +30,5 @@ module.exports = function(app) {
     app.route('/entries').get(entryController.getAll);
     app.route('/countries').get(entryController.getCountries);
     app.route('/delete/:id').get(entryController.deleteEntry);
+    app.route('/deleteImage/:id').get(entryController.deleteImage);
 };
