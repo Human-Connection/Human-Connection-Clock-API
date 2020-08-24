@@ -6,7 +6,8 @@ let formidable = require('formidable'),
     crypto = require('crypto'),
     resize = require('./resize'),
     mailer = require('./mailer'),
-    validator = require('validator');
+    validator = require('validator'),
+    sharp = require('sharp');
 
 exports.getAll = function (req, res) {
     const ORDER_BY_DATE_ASC = 'asc',
@@ -64,7 +65,7 @@ exports.getAll = function (req, res) {
                 obj.confirmed_at = item.confirmed_at;
 
                 if (item.image !== '') {
-                    obj.image = 'https://' + req.hostname + '/uploads/' + item.image;
+                    obj.image = 'http://localhost:1337/uploads/' + item.image;
                 } else {
                     obj.image = '';
                 }
@@ -175,6 +176,34 @@ exports.deleteImage = function (request, response) {
         });
     } else {
         response.status(400).json({error: 'No entry id specified'});
+    }
+};
+
+exports.rotateImage = function (request, response) {
+    console.log('Rotate image');
+    const imageFile = './uploads/' + 'upload_0dc794a4d3949c1a7b51a132122d3b5a.png';
+    try {
+        if (fs.existsSync(imageFile)) {
+            console.log('file exists');
+
+            sharp(imageFile)
+                .rotate(90)
+                .withMetadata()
+                .toBuffer(function(error, buffer) {
+                    if (error) {
+                        response.status(400).json({success: false, message: 'writing image to buffer failed'});
+                        return;
+                    }
+
+                    fs.writeFile(imageFile, buffer, function () {
+                        response.status(200).json({success: true, message: 'image rotated successfully'});
+                        return;
+                    });
+                });
+        }
+    } catch(error) {
+        response.status(400).json({success: false, message: 'file does not exist'});
+        return;
     }
 };
 
