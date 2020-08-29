@@ -65,7 +65,7 @@ exports.getAll = function (req, res) {
                 obj.confirmed_at = item.confirmed_at;
 
                 if (item.image !== '') {
-                    obj.image = 'http://localhost:1337/uploads/' + item.image;
+                    obj.image = 'https://' + req.hostname + '/uploads/' + item.image;
                 } else {
                     obj.image = '';
                 }
@@ -183,23 +183,22 @@ exports.rotateImage = function (request, response) {
     if (request.params.id && request.params.id > 0 && request.params.degree && request.params.degree > 0) {
         const allowedDegress = [90, 180, 270];
 
-        if (!allowedDegress.includes(request.params.degree)) {
+        if (!allowedDegress.includes(parseInt(request.params.degree))) {
             response.status(400).json({error: 'Degree accepts only the following values: ' + allowedDegress.join(', ')});
+            return;
         }
 
         db.getEntry(request.params.id, function (result, error) {
             if (!error && result) {
-                response.status(200).json({result: result});
-                return;
 
                 if (result[0].image == '' ) {
                     response.status(400).json({error: 'Entry has no image'});
                     return;
                 }
 
-                const path = './uploads/' + result[0].image;
+                const imagePath = './uploads/' + result[0].image;
                 try {
-                    if (fs.existsSync(path)) {
+                    if (fs.existsSync(imagePath)) {
                         //file exists
                     }
                 } catch (error) {
@@ -208,13 +207,31 @@ exports.rotateImage = function (request, response) {
                 }
 
                 try {
-                    fs.unlinkSync(path);
+                    sharp(imagePath)
+                        .rotate(parseInt(request.params.degree))
+                        .withMetadata()
+                        .toBuffer(function(error, buffer) {
+                            if(error) {
+                                throw error;
+                            }
+                            fs.writeFile(imagePath, buffer, function() {
+                                response.status(200).json({success: true});
+                            });
+                        })
                 } catch (error) {
-                    response.status(400).json({error: error});
-                    return;
+                    console.log(`error when trying to rotate image ${imagePath}`, error);
+                    response.status(400).json({error: 'No entry id specified'});
                 }
 
-                response.status(200).json({success: true});
+
+        // try {
+                //     fs.unlinkSync(path);
+                // } catch (error) {
+                //     response.status(400).json({error: error});
+                //     return;
+                // }
+
+
             } else {
                 response.status(400).json({error: 'No entry id specified'});
             }
