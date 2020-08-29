@@ -180,30 +180,47 @@ exports.deleteImage = function (request, response) {
 };
 
 exports.rotateImage = function (request, response) {
-    console.log('Rotate image');
-    const imageFile = './uploads/' + 'upload_0dc794a4d3949c1a7b51a132122d3b5a.png';
-    try {
-        if (fs.existsSync(imageFile)) {
-            console.log('file exists');
+    if (request.params.id && request.params.id > 0 && request.params.degree && request.params.degree > 0) {
+        const allowedDegress = [90, 180, 270];
 
-            sharp(imageFile)
-                .rotate(90)
-                .withMetadata()
-                .toBuffer(function(error, buffer) {
-                    if (error) {
-                        response.status(400).json({success: false, message: 'writing image to buffer failed'});
-                        return;
-                    }
-
-                    fs.writeFile(imageFile, buffer, function () {
-                        response.status(200).json({success: true, message: 'image rotated successfully'});
-                        return;
-                    });
-                });
+        if (!allowedDegress.includes(request.params.degree)) {
+            response.status(400).json({error: 'Degree accepts only the following values: ' + allowedDegress.join(', ')});
         }
-    } catch(error) {
-        response.status(400).json({success: false, message: 'file does not exist'});
-        return;
+
+        db.getEntry(request.params.id, function (result, error) {
+            if (!error && result) {
+                response.status(200).json({result: result});
+                return;
+
+                if (result[0].image == '' ) {
+                    response.status(400).json({error: 'Entry has no image'});
+                    return;
+                }
+
+                const path = './uploads/' + result[0].image;
+                try {
+                    if (fs.existsSync(path)) {
+                        //file exists
+                    }
+                } catch (error) {
+                    response.status(400).json({error: error});
+                    return;
+                }
+
+                try {
+                    fs.unlinkSync(path);
+                } catch (error) {
+                    response.status(400).json({error: error});
+                    return;
+                }
+
+                response.status(200).json({success: true});
+            } else {
+                response.status(400).json({error: 'No entry id specified'});
+            }
+        });
+    } else {
+        response.status(400).json({error: 'No entry id or degree specified'});
     }
 };
 
