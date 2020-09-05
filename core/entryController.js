@@ -180,8 +180,8 @@ exports.deleteImage = function (request, response) {
 };
 
 exports.rotateImage = function (request, response) {
-    if (request.params.id && request.params.id > 0 && request.params.degree && request.params.degree > 0) {
-        const allowedDegress = [90, 180, 270];
+    if (request.params.id && request.params.id > 0 && request.params.degree && request.params.degree >= 0) {
+        const allowedDegress = [0, 90, 180, 270];
 
         if (!allowedDegress.includes(parseInt(request.params.degree))) {
             response.status(400).json({error: 'Degree accepts only the following values: ' + allowedDegress.join(', ')});
