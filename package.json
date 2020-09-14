@@ -18,7 +18,7 @@
     "email-templates": "^7.0.5",
     "express": "^4.17.1",
     "formidable": "^1.2.2",
-    "moment": "^2.27.0",
+    "moment": "^2.28.0",
     "mysql": "^2.18.1",
     "nodemailer": "^4.7.0",
     "nodemailer-smtp-transport": "^2.7.4",
