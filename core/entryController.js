@@ -6,7 +6,8 @@ let formidable = require('formidable'),
     crypto = require('crypto'),
     resize = require('./resize'),
     mailer = require('./mailer'),
-    validator = require('validator');
+    validator = require('validator'),
+    sharp = require('sharp');
 
 exports.getAll = function (req, res) {
     const ORDER_BY_DATE_ASC = 'asc',
@@ -175,6 +176,68 @@ exports.deleteImage = function (request, response) {
         });
     } else {
         response.status(400).json({error: 'No entry id specified'});
+    }
+};
+
+exports.rotateImage = function (request, response) {
+    if (request.params.id && request.params.id > 0 && request.params.degree && request.params.degree >= 0) {
+        const allowedDegress = [0, 90, 180, 270];
+
+        if (!allowedDegress.includes(parseInt(request.params.degree))) {
+            response.status(400).json({error: 'Degree accepts only the following values: ' + allowedDegress.join(', ')});
+            return;
+        }
+
+        db.getEntry(request.params.id, function (result, error) {
+            if (!error && result) {
+
+                if (result[0].image == '' ) {
+                    response.status(400).json({error: 'Entry has no image'});
+                    return;
+                }
+
+                const imagePath = './uploads/' + result[0].image;
+                try {
+                    if (fs.existsSync(imagePath)) {
+                        //file exists
+                    }
+                } catch (error) {
+                    response.status(400).json({error: error});
+                    return;
+                }
+
+                try {
+                    sharp(imagePath)
+                        .rotate(parseInt(request.params.degree))
+                        .withMetadata()
+                        .toBuffer(function(error, buffer) {
+                            if(error) {
+                                throw error;
+                            }
+                            fs.writeFile(imagePath, buffer, function() {
+                                response.status(200).json({success: true});
+                            });
+                        })
+                } catch (error) {
+                    console.log(`error when trying to rotate image ${imagePath}`, error);
+                    response.status(400).json({error: 'No entry id specified'});
+                }
+
+
+        // try {
+                //     fs.unlinkSync(path);
+                // } catch (error) {
+                //     response.status(400).json({error: error});
+                //     return;
+                // }
+
+
+            } else {
+                response.status(400).json({error: 'No entry id specified'});
+            }
+        });
+    } else {
+        response.status(400).json({error: 'No entry id or degree specified'});
     }
 };
 
