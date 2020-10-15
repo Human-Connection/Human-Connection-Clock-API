@@ -1,9 +1,9 @@
-# Clock of Change - API Server (Backend)
+# Human Connection Clock - API Server (Backend)
 
 
-This repository contains the API Server - or in other terms Backend - of the Clock of Change.
+This repository contains the API Server - or in other terms Backend - of the Human Connection Clock.
 
-To find out more about the Clock of Change and Human Connection - the network behind it - visit https://human-connection.org/en/.
+To find out more about the Human Connection Clock and Human Connection - the network behind it - visit https://human-connection.org/en/.
 
 ## Tech Stack
 
@@ -21,7 +21,7 @@ To find out more about the Clock of Change and Human Connection - the network be
 * core/: The core directory contains the most important files of the project like database, mailer, router and main controller
 * core/entryController.js: Is the main controller for all the requests
 * core/restapi.js: All routes can be found here, they will also be listed further down
-* documentation/: Documentation for the Clock of Change API
+* documentation/: Documentation for the Human Connection Clock API
 * mails/: The mails directory holds the mail templates
 * migrations/: Migrations for the database
 * public/: The public directory is not used for now
@@ -44,7 +44,7 @@ MySQL DB can be configured with the following environment variables:
 
 Currently we have two tables:
 * apikeys: Contains the apikeys required to perform authorized API request
-* entries: Stores the user entries for the Clock of Change
+* entries: Stores the user entries for the Human Connection Clock
 
 For more information about the tables, see the SQL dump of the tables at `documentation/tables.sql` .
 
@@ -66,8 +66,8 @@ SMTP can be configured with the following environment variables:
 
 
 To debug and preview the emails, we use [MailHog](https://github.com/mailhog/MailHog). 
-When installing the Clock of Change without Docker, you have to install MailHog manually (see link for details).
-Then set the host address of MailHog in the Clock of Change API and use `1025` as the port number.
+When installing the Human Connection Clock without Docker, you have to install MailHog manually (see link for details).
+Then set the host address of MailHog in the Human Connection Clock API and use `1025` as the port number.
 
 Assuming MailHog is running on localhost or you have chosen the Docker installation, you can debug and preview the mails under [http://localhost:8025/](http://localhost:8025/).
 
@@ -93,7 +93,7 @@ OS: Windows 10
 
 **DOCKER INSTALLATION**
 
-The Clock of Change API server comes bundled as a Docker Container, which enables you to run then server out of the box.
+The Human Connection Clock API server comes bundled as a Docker Container, which enables you to run then server out of the box.
 
 Of course you need to have a recent version of [Docker](https://www.docker.com/get-started) installed. If you don't have Docker, follow the instructions of the link.
 You can check the version like this:
@@ -103,46 +103,46 @@ Docker version 18.09.1, build 4c52b90
 ``` 
 
 To run the Docker version, follow these steps:
-1. First you need to clone the git repository of the Clock of Change API. Head to a directory where you want the git repository to reside
-and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-API.git` to clone the repository to this directory.
-2. Go to the newly created Clock-of-Change-API directory (`cd Clock-of-Change-API` in the console)
-3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time you should see the Clock of Change ticking.
+1. First you need to clone the git repository of the Human Connection Clock API. Head to a directory where you want the git repository to reside
+and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Human-Connection-Clock-API.git` to clone the repository to this directory.
+2. Go to the newly created Human-Connection-Clock-API directory (`cd Human-Connection-Clock-API` in the console)
+3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time you should see the Human Connection Clock ticking.
 4. To create an initial API key and sample entries, run `docker-compose exec db_api seed.sh`. The initial API key you can use with your requests will have the value `secret`.
 
-Now the Clock of Change API server is ready for usage at [http://127.0.0.1:1337](http://127.0.0.1:1337)
+Now the Human Connection Clock API server is ready for usage at [http://127.0.0.1:1337](http://127.0.0.1:1337)
 
 **LOCAL INSTALLATION & USAGE**
 
-If you do not want to use the docker version, you can also install the Clock of Change API server locally.
+If you do not want to use the docker version, you can also install the Human Connection Clock API server locally.
 
-1. First you need to clone the git repository of the Clock of Change API. Head to a directory where you want the git repository to reside
-and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-API.git` to clone the repository to this directory.
-2. Go to the newly created Clock-of-Change-API directory (`cd Clock-of-Change-API` in the console) and run `npm install`.
+1. First you need to clone the git repository of the Human Connection Clock API. Head to a directory where you want the git repository to reside
+and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Human-Connection-Clock-API.git` to clone the repository to this directory.
+2. Go to the newly created Human-Connection-Clock-API directory (`cd Human-Connection-Clock-API` in the console) and run `npm install`.
 Now all the dependencies should install.
 3. Edit the file `core/db.js` and add your MySQL credentials (host, user, password, database name). 
 4. Create the tables - TODO: Add create table script & insert start values
 5. Edit the file `core/mailer.js` and add your smtp credentials (host, user, password)
 
-Now the Clock of Change API server is ready to tick.
+Now the Human Connection Clock API server is ready to tick.
 
 ## Usage
 
 **START THE SERVER**
 
 This section only applies if you have chosen the local installation. 
-When installing the Clock of Change API server with Docker, the server is starting automatically.
+When installing the Human Connection Clock API server with Docker, the server is starting automatically.
 
-In the base Clock-of-Change-API directory run
+In the base Human-Connection-Clock-API directory run
 
 `npm run start`
 
-in the console to start the Clock of Change API server.
+in the console to start the Human Connection Clock API server.
 This will start Nodemon and the Node.js server, which will start listening for and processing requests at [http://localhost:1337](http://localhost:1337).
 
 **RUN DATABASE MIGRATIONS**
 
 This section only applies if you have chosen the local installation. 
-When installing the Clock of Change API server with Docker, the database migrations are applied automatically.
+When installing the Human Connection Clock API server with Docker, the database migrations are applied automatically.
 
 To create the necessary tables by applying the database migrations, run `db-migrate up` in the console. 
 
@@ -158,7 +158,7 @@ $ db-migrate up
 
 Pro Tip: Get [Postman](https://www.getpostman.com/) to make requests. This amazing tool makes working with APIs way easier.
 
-When using the default port 1337 (which you do if you haven't changed it in server.js), you can send requests to the Clock of Change API to `http://127.0.0.1:1337`.
+When using the default port 1337 (which you do if you haven't changed it in server.js), you can send requests to the Human Connection Clock API to `http://127.0.0.1:1337`.
 
 Refer to the list of routes below, to see all possible requests with description you can make.
 
