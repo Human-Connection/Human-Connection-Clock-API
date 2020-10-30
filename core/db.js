@@ -106,7 +106,7 @@ exports.getEntries = function(filter, callback){
         }
 
         if (filter['search'] && filter['search'].length > 0) {
-            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email LIKE %' + pool.escape(filter['search']) + '%';
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email LIKE ' + pool.escape('%' + filter['search'] + '%') + '';
         }
 
         let orderBy = filter['orderBy'] ? filter['orderBy'] : 'id';
