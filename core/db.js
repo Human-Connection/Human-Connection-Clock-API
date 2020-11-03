@@ -105,6 +105,10 @@ exports.getEntries = function(filter, callback){
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 0';
         }
 
+        if (filter['search'] && filter['search'].length > 0) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email LIKE ' + pool.escape('%' + filter['search'] + '%') + '';
+        }
+
         let orderBy = filter['orderBy'] ? filter['orderBy'] : 'id';
         let order   = filter['order'] ? filter['order'] : 'desc';
 
@@ -241,6 +245,10 @@ exports.getCount = function(filter, callback){
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 1';
         } else if (filter['status'] === 'inactive' && filter['active'] !== 1) {
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 0';
+        }
+
+        if (filter['search'] && filter['search'].length > 0) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email LIKE ' + pool.escape('%' + filter['search'] + '%') + '';
         }
 
         // make the query
