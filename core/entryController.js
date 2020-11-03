@@ -248,6 +248,7 @@ exports.getCount = function (req, res) {
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
     filter['confirmed'] = req.query.confirmed === 'yes' || req.query.confirmed === 'no' ? req.query.confirmed : 'all';
     filter['status'] = req.query.status === 'active' || req.query.status === 'inactive' ? req.query.status : 'all';
+    filter['search'] = req.query.search && req.query.search.length > 0  ? req.query.search : null;
 
     db.getCount(filter, function (results, err) {
         if (!err) {

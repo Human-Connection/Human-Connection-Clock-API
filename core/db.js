@@ -247,6 +247,10 @@ exports.getCount = function(filter, callback){
             sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' status = 0';
         }
 
+        if (filter['search'] && filter['search'].length > 0) {
+            sql += (sql.includes('WHERE') ? ' AND' : ' WHERE') + ' email LIKE ' + pool.escape('%' + filter['search'] + '%') + '';
+        }
+
         // make the query
         connection.query(sql, function(err, results) {
             connection.release();
