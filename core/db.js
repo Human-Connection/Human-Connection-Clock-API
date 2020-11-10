@@ -321,6 +321,33 @@ exports.saveEntry = function(fields, callback){
     });
 };
 
+exports.updateEntry = function(id, fields, callback){
+    pool.getConnection(function(error, connection) {
+        if (error) {
+            console.log(error);
+            callback(error);
+            return;
+        }
+
+        let fieldSqlStatements = [];
+        for (let key in fields) {
+            fieldSqlStatements.push(key + ' = ' + pool.escape(fields[key]));
+        }
+
+        let sql  = "UPDATE entries SET " + fieldSqlStatements.join(', ') + " WHERE  id=?;";
+
+        // make the query
+        connection.query(sql, [id], function(error) {
+            connection.release();
+            if(error) {
+                callback(error);
+                return;
+            }
+            callback(false);
+        });
+    });
+};
+
 /**
  * this function is to prevent application errors
  */

@@ -428,3 +428,44 @@ exports.createEntry = function (req, res) {
         }
     });
 };
+
+exports.updateEntry = function (request, response) {
+    if (request.params.id && request.params.id > 0) {
+        db.getEntry(request.params.id, function (result, error) {
+            if (!error) {
+
+                let form = new formidable.IncomingForm(),
+                fields = {},
+                errorFields = [];
+
+                // Send error message back to client.
+                form.parse(request).on('field', function (field, value) {
+                    console.log(field);
+                    if (field === 'message') {
+                        fields[[field]] = validator.escape(validator.trim(value));
+                        if (!validator.isLength(value, {min: 1, max: 500})) {
+                            errorFields.push('message');
+                        }
+                    }
+                }).on('end', function () {
+                    if (errorFields.length === 0 && Object.keys(fields).length > 0) {
+                        db.updateEntry(request.params.id, fields, function (error, results) {
+                            if (!error) {
+                                response.status(200).json({success: true});
+                            } else {
+                                console.log(error);
+                                response.status(400).json(Object.assign({success: false}, error));
+                            }
+                        });
+                    } else {
+                        response.status(400).json({error: "error"});
+                    }
+                });
+            } else {
+                response.status(400).json({error: error});
+            }
+        });
+    } else {
+        response.status(400).json({error: 'No entry id specified'});
+    }
+};
