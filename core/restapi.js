@@ -32,4 +32,5 @@ module.exports = function(app) {
     app.route('/delete/:id').get(entryController.deleteEntry);
     app.route('/deleteImage/:id').get(entryController.deleteImage);
     app.route('/rotateImage/:id/:degree').get(entryController.rotateImage);
+    app.route('/update/:id').post(entryController.updateEntry);
 };
