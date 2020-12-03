@@ -443,9 +443,6 @@ exports.updateEntry = function (request, response) {
                     console.log(field);
                     if (field === 'message') {
                         fields[[field]] = validator.escape(validator.trim(value));
-                        if (!validator.isLength(value, {min: 1, max: 500})) {
-                            errorFields.push('message');
-                        }
                     }
                 }).on('end', function () {
                     if (errorFields.length === 0 && Object.keys(fields).length > 0) {
