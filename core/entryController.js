@@ -274,17 +274,26 @@ exports.getCountries = function (req, res) {
     });
 };
 
-exports.verifyEntry = function (req, res) {
-    db.verifyEntry(req.params.k, function (results, err) {
+// The verify entry links don't work anymore since new entries are ative by default
+// This is just a placeholder method for old links to prevent errors
+exports.verifyEntry = function (request, response) {
+    response.redirect('https://human-connection.org/');
+};
+
+exports.disableEntry = function (req, res) {
+    db.getUserByHash(req.params.k, function (results, err) {
         if (!err) {
-            db.getUserByHash(req.params.k, function (results, err) {
+            // Don't send verification success message, since user can only deactivate with the link
+            // mailer.sendVerifySuccess({email: results[0].email, firstname: results[0].firstname});
+            db.disableEntry(req.params.k, function (results, err) {
                 if (!err) {
-                    mailer.sendVerifySuccess({email: results[0].email, firstname: results[0].firstname});
-                    res.redirect('https://human-connection.org/uhr-des-wandels/?ns=t');
+                    res.redirect('https://human-connection.org/?ns=t');
+                } else {
+                    res.redirect('https://human-connection.org/?ns=f');
                 }
             });
         } else {
-            res.redirect('https://human-connection.org/uhr-des-wandels/?ns=f');
+            res.redirect('https://human-connection.org/?ns=f');
         }
     });
 };

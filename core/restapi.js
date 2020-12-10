@@ -10,6 +10,7 @@ module.exports = function(app) {
     app.route('/cube.php').get(entryController.getCount);
     app.route('/count').get(entryController.getCount);
     app.route('/entries/verify/:k').get(entryController.verifyEntry);
+    app.route('/entries/disable/:k').get(entryController.disableEntry);
 
     // intercept request and check for api key
     app.use((req, res, next) => {
