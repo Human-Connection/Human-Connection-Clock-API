@@ -24,7 +24,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "q": "^1.5.1",
     "sharp": "^0.25.4",
-    "validator": "^13.1.1"
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
