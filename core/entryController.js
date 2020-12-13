@@ -451,7 +451,7 @@ exports.updateEntry = function (request, response) {
                 form.parse(request).on('field', function (field, value) {
                     console.log(field);
                     if (field === 'message') {
-                        fields[[field]] = validator.escape(validator.trim(value));
+                        fields[[field]] = validator.trim(value);
                     }
                 }).on('end', function () {
                     if (errorFields.length === 0 && Object.keys(fields).length > 0) {
