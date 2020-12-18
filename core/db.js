@@ -152,7 +152,7 @@ exports.getUserByHash = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if (err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT email, firstname from entries WHERE confirm_key = ?;";
+        let sql  = "SELECT id, email, firstname from entries WHERE confirm_key = ?;";
 
         // make the query
         connection.query(sql, [hash], function(err, results) {

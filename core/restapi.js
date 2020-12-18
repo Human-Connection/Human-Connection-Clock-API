@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.route('/count').get(entryController.getCount);
     app.route('/entries/verify/:k').get(entryController.verifyEntry);
     app.route('/entries/disable/:k').get(entryController.disableEntry);
+    app.route('/entries/disable-delete/:k').get(entryController.disableEntryDelete);
 
     // intercept request and check for api key
     app.use((req, res, next) => {

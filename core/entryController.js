@@ -7,7 +7,8 @@ let formidable = require('formidable'),
     resize = require('./resize'),
     mailer = require('./mailer'),
     validator = require('validator'),
-    sharp = require('sharp');
+    sharp = require('sharp'),
+    ejs = require("ejs");
 
 exports.getAll = function (req, res) {
     const ORDER_BY_DATE_ASC = 'asc',
@@ -280,21 +281,47 @@ exports.verifyEntry = function (request, response) {
     response.redirect('https://human-connection.org/');
 };
 
-exports.disableEntry = function (req, res) {
-    db.getUserByHash(req.params.k, function (results, err) {
+exports.disableEntry = function (request, response) {
+    db.getUserByHash(request.params.k, function (results, err) {
         if (!err) {
-            // Don't send verification success message, since user can only deactivate with the link
-            // mailer.sendVerifySuccess({email: results[0].email, firstname: results[0].firstname});
-            db.disableEntry(req.params.k, function (results, err) {
-                if (!err) {
-                    res.redirect('https://human-connection.org/?ns=t');
+            ejs.renderFile(__dirname + "/../templates/delete-confirm.ejs", { hash : request.params.k }, function (err, data) {
+                if (err) {
+                    response.writeHead(404);
+                    response.write('Whoops! File not found!');
                 } else {
-                    res.redirect('https://human-connection.org/?ns=f');
+                    response.writeHead(200, {
+                        'Content-Type': 'text/html'
+                    });
+                    response.write(data);
                 }
             });
         } else {
-            res.redirect('https://human-connection.org/?ns=f');
+            response.writeHead(404);
+            response.write('Whoops! User not found!');
         }
+
+        response.end();
+    });
+};
+
+exports.disableEntryDelete = function (request, response) {
+    db.getUserByHash(request.params.k, function (results, err) {
+        if (!err && results[0] && results[0].id ) {
+            db.deleteEntry(results[0].id, function (error) {
+                if (!error) {
+                    response.redirect(302, 'https://human-connection.org/');
+                    response.end();
+                } else {
+                    response.writeHead(404);
+                    response.write('Whoops! Error when deleting entry!');
+                }
+            });
+        } else {
+            response.writeHead(404);
+            response.write('Whoops! User not found!');
+        }
+
+        response.end();
     });
 };
 
