@@ -33,8 +33,8 @@ exports.getAll = function (req, res) {
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
     filter['confirmed'] = req.query.confirmed === 'yes' || req.query.confirmed === 'no' ? req.query.confirmed : 'all';
     filter['status'] = req.query.status === 'active' || req.query.status === 'inactive' ? req.query.status : 'all';
-    filter['country'] = req.query.country && req.query.country.length > 0  ? req.query.country : null;
-    filter['search'] = req.query.search && req.query.search.length > 0  ? req.query.search : null;
+    filter['country'] = req.query.country && req.query.country.length > 0 ? req.query.country : null;
+    filter['search'] = req.query.search && req.query.search.length > 0 ? req.query.search : null;
 
     // 'orderBy' && 'order' are parameters from the WP admin backend for ordering the entries list
     if (req.query.orderBy && orderByAcceptedAttributes.includes(req.query.orderBy)) {
@@ -153,7 +153,7 @@ exports.deleteImage = function (request, response) {
                             if (fs.existsSync(path)) {
                                 //file exists
                             }
-                        } catch(error) {
+                        } catch (error) {
                             response.status(400).json({error: error});
                             return;
                         }
@@ -192,7 +192,7 @@ exports.rotateImage = function (request, response) {
         db.getEntry(request.params.id, function (result, error) {
             if (!error && result) {
 
-                if (result[0].image == '' ) {
+                if (result[0].image == '') {
                     response.status(400).json({error: 'Entry has no image'});
                     return;
                 }
@@ -211,21 +211,21 @@ exports.rotateImage = function (request, response) {
                     sharp(imagePath)
                         .rotate(parseInt(request.params.degree))
                         .withMetadata()
-                        .toBuffer(function(error, buffer) {
-                            if(error) {
+                        .toBuffer(function (error, buffer) {
+                            if (error) {
                                 throw error;
                             }
-                            fs.writeFile(imagePath, buffer, function() {
+                            fs.writeFile(imagePath, buffer, function () {
                                 response.status(200).json({success: true});
                             });
-                        })
+                        });
                 } catch (error) {
                     console.log(`error when trying to rotate image ${imagePath}`, error);
                     response.status(400).json({error: 'No entry id specified'});
                 }
 
 
-        // try {
+                // try {
                 //     fs.unlinkSync(path);
                 // } catch (error) {
                 //     response.status(400).json({error: error});
@@ -248,7 +248,7 @@ exports.getCount = function (req, res) {
     filter['profileImage'] = parseInt(req.query.profileImage) || 0;
     filter['confirmed'] = req.query.confirmed === 'yes' || req.query.confirmed === 'no' ? req.query.confirmed : 'all';
     filter['status'] = req.query.status === 'active' || req.query.status === 'inactive' ? req.query.status : 'all';
-    filter['search'] = req.query.search && req.query.search.length > 0  ? req.query.search : null;
+    filter['search'] = req.query.search && req.query.search.length > 0 ? req.query.search : null;
 
     db.getCount(filter, function (results, err) {
         if (!err) {
@@ -274,17 +274,26 @@ exports.getCountries = function (req, res) {
     });
 };
 
-exports.verifyEntry = function (req, res) {
-    db.verifyEntry(req.params.k, function (results, err) {
+// The verify entry links don't work anymore since new entries are ative by default
+// This is just a placeholder method for old links to prevent errors
+exports.verifyEntry = function (request, response) {
+    response.redirect('https://human-connection.org/');
+};
+
+exports.disableEntry = function (req, res) {
+    db.getUserByHash(req.params.k, function (results, err) {
         if (!err) {
-            db.getUserByHash(req.params.k, function (results, err) {
+            // Don't send verification success message, since user can only deactivate with the link
+            // mailer.sendVerifySuccess({email: results[0].email, firstname: results[0].firstname});
+            db.disableEntry(req.params.k, function (results, err) {
                 if (!err) {
-                    mailer.sendVerifySuccess({email: results[0].email, firstname: results[0].firstname});
-                    res.redirect('https://human-connection.org/uhr-des-wandels/?ns=t');
+                    res.redirect('https://human-connection.org/?ns=t');
+                } else {
+                    res.redirect('https://human-connection.org/?ns=f');
                 }
             });
         } else {
-            res.redirect('https://human-connection.org/uhr-des-wandels/?ns=f');
+            res.redirect('https://human-connection.org/?ns=f');
         }
     });
 };
@@ -435,8 +444,8 @@ exports.updateEntry = function (request, response) {
             if (!error) {
 
                 let form = new formidable.IncomingForm(),
-                fields = {},
-                errorFields = [];
+                    fields = {},
+                    errorFields = [];
 
                 // Send error message back to client.
                 form.parse(request).on('field', function (field, value) {
@@ -455,7 +464,7 @@ exports.updateEntry = function (request, response) {
                             }
                         });
                     } else {
-                        response.status(400).json({error: "error"});
+                        response.status(400).json({error: 'error'});
                     }
                 });
             } else {

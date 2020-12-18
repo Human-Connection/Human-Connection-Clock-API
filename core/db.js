@@ -163,12 +163,12 @@ exports.getUserByHash = function(hash, callback){
     });
 };
 
-exports.verifyEntry = function(hash, callback){
+exports.disableEntry = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
 
-        let sql  = "UPDATE entries set email_confirmed = 1, confirmed_at = ? "
-            + "WHERE  confirm_key = ? AND  confirmed_at is null;";
+        let sql  = "UPDATE entries set email_confirmed = 0, confirmed_at = ? "
+            + "WHERE  confirm_key = ?;";
 
         // make the query
         connection.query(sql, [moment().valueOf(), hash], function(err, results) {
@@ -253,6 +253,7 @@ exports.getCount = function(filter, callback){
 
         // make the query
         connection.query(sql, function(err, results) {
+            console.log(this.sql);
             connection.release();
             if(err) { callback(results, true); return; }
             callback(results, false);
@@ -287,8 +288,8 @@ exports.saveEntry = function(fields, callback){
                     return;
                 }else{
                     let sql  = "INSERT INTO entries (firstname, lastname, email, country, message, anon, image, "
-                        + "created_at, updated_at, confirm_key, beta, newsletter, pax) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                        + "created_at, updated_at, confirmed_at, email_confirmed, confirm_key, beta, newsletter, pax) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
                     // run the query
                     connection.query(
@@ -303,6 +304,8 @@ exports.saveEntry = function(fields, callback){
                             data.image,
                             data.created_at,
                             data.updated_at,
+                            Math.floor(new Date().getTime() / 1000),
+                            1,
                             data.randomHash,
                             data.beta,
                             data.newsletter,

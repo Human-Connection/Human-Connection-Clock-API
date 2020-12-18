@@ -51,9 +51,9 @@ exports.sendVerificationMail = function(key, recipient, callback = null){
             console.log(err);
         } else {
             let mailOptions = {
-                from: '"Human Connection - Uhr des Wandels" <uhrdeswandels@human-connection.org>', // sender address
+                from: '"Human Connection Clock" <uhrdeswandels@human-connection.org>', // sender address
                 to: recipient.email, // list of receivers
-                subject: "Uhr des Wandels E-Mail-Adresse bestätigen", // Subject line
+                subject: "Human Connection Uhr Eintrag erfolgeich", // Subject line
                 html: data // html body
             };
 
