@@ -20,7 +20,7 @@ exports.toggleEntryStatus = function(id, state, callback){
         // TODO: UPDATE STATUS
         // 1 = confirmed | 2 = removed
         let sql;
-        if(state === '1' || state === '2'){
+        if(state === '1' || state === '0'){
             sql  = "UPDATE entries SET status = ? WHERE id = ?";
         }else{
             callback({}, false);
