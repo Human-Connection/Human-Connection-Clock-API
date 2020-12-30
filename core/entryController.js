@@ -314,14 +314,14 @@ exports.disableEntryDelete = function (request, response) {
                 } else {
                     response.writeHead(404);
                     response.write('Whoops! Error when deleting entry!');
+                    response.end();
                 }
             });
         } else {
             response.writeHead(404);
             response.write('Whoops! User not found!');
+            response.end();
         }
-
-        response.end();
     });
 };
 
