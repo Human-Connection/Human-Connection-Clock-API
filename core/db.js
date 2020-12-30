@@ -20,7 +20,7 @@ exports.toggleEntryStatus = function(id, state, callback){
         // TODO: UPDATE STATUS
         // 1 = confirmed | 2 = removed
         let sql;
-        if(state === '1' || state === '2'){
+        if(state === '1' || state === '0'){
             sql  = "UPDATE entries SET status = ? WHERE id = ?";
         }else{
             callback({}, false);
@@ -152,7 +152,7 @@ exports.getUserByHash = function(hash, callback){
     pool.getConnection(function(err, connection) {
         if (err) { console.log(err); callback(true); return; }
 
-        let sql  = "SELECT email, firstname from entries WHERE confirm_key = ?;";
+        let sql  = "SELECT id, email, firstname from entries WHERE confirm_key = ?;";
 
         // make the query
         connection.query(sql, [hash], function(err, results) {
