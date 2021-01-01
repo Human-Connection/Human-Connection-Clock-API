@@ -284,7 +284,7 @@ exports.verifyEntry = function (request, response) {
 exports.disableEntry = function (request, response) {
     db.getUserByHash(request.params.k, function (results, err) {
         if (!err) {
-            ejs.renderFile(__dirname + "/../templates/delete-confirm.ejs", { hash : request.params.k }, function (err, data) {
+            ejs.renderFile(__dirname + "/../templates/deleteConfirm.ejs", { hash : request.params.k }, function (err, data) {
                 if (err) {
                     response.writeHead(404);
                     response.write('Whoops! File not found!');

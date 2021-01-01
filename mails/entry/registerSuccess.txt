@@ -1,0 +1,27 @@
+Hallo {{{firstname}}},
+
+WILLKOMMEN bei der Human Connection Uhr! VIELEN DANK, dass Du mit dabei bist! Zusammen setzen wir ein Zeichen! Wenn du deinen Eintrag deaktivieren möchtest, klicke bitte auf den folgende Button:
+
+https://api.clockofchange.org/entries/disable/{{{key}}}
+
+Human Connection Drei plus Eins
+
+www.human-connection.org
+
+Wir würden uns sehr über Deine Unterstützung freuen! Mit einer einmaligen oder monatlichen Spende kannst du unsere Arbeit unterstützen.
+Human Connection ist wegen Förderung internationaler Gesinnung, der Toleranz auf allen Gebieten der Kultur und des Völkerverständigungsgedankens als gemeinnützig anerkannt. Alle Spenden dienen dem Gemeinwohl.
+UNTERSTÜTZE UNS!
+
+Es gibt jetzt außerdem die Möglichkeit die Human Connection Uhr als lebensechtes Modell zum Aufstellen vorzubestellen - erfahre mehr unter https://human-connection.org/vorbestellen/
+
+Bankverbindung
+GLS Bank
+IBAN: DE08 4306 0967 7024 1934 00
+BIC / SWIFT: GENODEM1GLS
+
+Kennst Du schon das Partnerprogramm von Human Connection? Als Partnerunternehmen können Sie Ihren ganz besonderen Beitrag leisten und sich zusammen mit uns für ein gesellschaftliches, besseres Miteinander einsetzen.
+PARTNER WERDEN
+
+CEO und Gründer: Dennis Hack - Registergericht Stuttgart - HRB 741951
+Steuernummer: 69042/06453 VAT-ID: DE284651760
+www.human-connection.org - info@human-connection.org
