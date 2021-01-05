@@ -25,6 +25,15 @@
             color:       #333;
         }
 
+        p {
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+
+        hr {
+            border-color: #eee;
+        }
+
         .btn {
             font-size: 18px;
             padding: 0.75em;
@@ -39,6 +48,22 @@
         #logo {
             text-align: center;
         }
+
+        .message-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 2em 0;
+        }
+        .message-image {
+            height: 50px;
+            margin-right: 30px;
+        }
+        .message-image img {
+            object-fit: contain;
+            max-height: 50px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -51,17 +76,45 @@
 </div>
 <main>
     <h1>Human Connection Clock - Delete Entry</h1>
-    <p>You are about to delete your entry for the Human Connection Clock.</p>
-    <p>When you proceed, all data will be deleted and can't be recovered.</p>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/en.png" alt="English" title="English">
+        </div>
+        <div>
+            <p>You are about to delete your entry for the Human Connection Clock.</p>
+            <p>When you proceed, all data will be deleted and can't be recovered.</p>
+        </div>
+    </div>
     <hr>
-    <p>Vous êtes en train de supprimer votre saisie pour l'horloge Human Connection </p>
-    <p>Si vous continuez, toutes vos données seront effacées et ne pourront pas être récupérées</p>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/fr.png" alt="English" title="Francais">
+        </div>
+        <div>
+            <p>Vous êtes en train de supprimer votre saisie pour l'horloge Human Connection </p>
+            <p>Si vous continuez, toutes vos données seront effacées et ne pourront pas être récupérées</p>
+        </div>
+    </div>
     <hr>
-    <p>Está a punto de borrar su entrada por el reloj Human Connection </p>
-    <p>Cuando proceda, todos los datos serán borrados y no podrán ser recuperados.</p>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/es.png" alt="English" title="Espanyol">
+        </div>
+        <div>
+            <p>Está a punto de borrar su entrada por el reloj Human Connection </p>
+            <p>Cuando proceda, todos los datos serán borrados y no podrán ser recuperados.</p>
+        </div>
+    </div>
     <hr>
-    <p>Sie sind dabei Ihren Eintrag für die Human Connection Uhr zu löschen.</p>
-    <p>Wenn Sie fortfahren werden alle Ihre Daten gelöscht und können nicht wieder hergestellt werden.</p>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/de.png" alt="English" title="Deutsch">
+        </div>
+        <div>
+            <p>Sie sind dabei Ihren Eintrag für die Human Connection Uhr zu löschen.</p>
+            <p>Wenn Sie fortfahren werden alle Ihre Daten gelöscht und können nicht wieder hergestellt werden.</p>
+        </div>
+    </div>
     <br>
     <p>
         <a href="/entries/disable-delete/<%= hash %>"><button class="btn btn-primary">Delete / Supprimer / Borrar / Löschen</button></a>
