@@ -56,6 +56,27 @@ exports.toggleEmailConfirmed = function(id, state, callback){
     });
 };
 
+exports.toggleNotApproved = function(id, notApproved, callback){
+    pool.getConnection(function(err, connection) {
+        if(err) { console.log(err); callback(true); return; }
+        let sql;
+        let status = 1;
+        if (notApproved === '0') {
+            sql  = "UPDATE entries SET status = ?, not_approved = ? WHERE id = ?";
+        } else if(notApproved === '1') {
+            sql  = "UPDATE entries SET status = ?, not_approved = ? WHERE id = ?";
+            status = 0;
+        }
+
+        // make the query
+        connection.query(sql, [status, notApproved, id], function(err, results) {
+            connection.release();
+            if(err) { callback(results, true); return; }
+            callback(results, false);
+        });
+    });
+};
+
 exports.isValidApiKey = function(secret, callback){
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }

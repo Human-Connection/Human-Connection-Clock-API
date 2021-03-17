@@ -122,6 +122,24 @@ exports.toggleEmailConfirmed = function (req, res) {
     });
 };
 
+exports.toggleNotApproved = function (req, res) {
+    console.log("toggleNotApproved");
+    let form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields) {
+        if (fields && fields.id !== undefined) {
+            db.toggleNotApproved(fields.id, fields.notApproved, function (results, err) {
+                if (!err) {
+                    res.status(200).json({success: true, message: 'toggled not approved & status'});
+                } else {
+                    res.status(400).json({success: false, message: 'error'});
+                }
+            });
+        }  else {
+            res.status(400).json({success: false, message: 'error nromal'});
+        }
+    });
+};
+
 exports.deleteEntry = function (request, response) {
     if (request.params.id && request.params.id > 0) {
         db.getEntry(request.params.id, function (result, error) {

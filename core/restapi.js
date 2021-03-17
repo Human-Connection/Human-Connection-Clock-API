@@ -29,6 +29,7 @@ module.exports = function(app) {
     app.route('/entries').post(entryController.createEntry);
     app.route('/entries/toggle').post(entryController.toggleStatus);
     app.route('/entries/toggle-email-confirmed').post(entryController.toggleEmailConfirmed);
+    app.route('/entries/toggle-not-approved').post(entryController.toggleNotApproved);
     app.route('/entries').get(entryController.getAll);
     app.route('/countries').get(entryController.getCountries);
     app.route('/delete/:id').get(entryController.deleteEntry);
