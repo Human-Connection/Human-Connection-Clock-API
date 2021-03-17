@@ -61,6 +61,7 @@ exports.getAll = function (req, res) {
                 obj.email_confirmed = item.email_confirmed;
                 obj.confirm_key = item.confirm_key;
                 obj.status = item.status;
+                obj.notApproved = item.not_approved;
                 obj.anon = item.anon;
                 obj.created_at = item.created_at;
                 obj.updated_at = item.updated_at;
