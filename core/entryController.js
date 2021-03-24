@@ -61,6 +61,7 @@ exports.getAll = function (req, res) {
                 obj.email_confirmed = item.email_confirmed;
                 obj.confirm_key = item.confirm_key;
                 obj.status = item.status;
+                obj.not_approved = item.not_approved;
                 obj.anon = item.anon;
                 obj.created_at = item.created_at;
                 obj.updated_at = item.updated_at;
@@ -118,6 +119,24 @@ exports.toggleEmailConfirmed = function (req, res) {
             });
         } else {
             res.status(400).json({success: false, message: 'error'});
+        }
+    });
+};
+
+exports.toggleNotApproved = function (req, res) {
+    console.log("toggleNotApproved");
+    let form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields) {
+        if (fields && fields.id !== undefined) {
+            db.toggleNotApproved(fields.id, fields.notApproved, function (results, err) {
+                if (!err) {
+                    res.status(200).json({success: true, message: 'toggled not approved & status'});
+                } else {
+                    res.status(400).json({success: false, message: 'error'});
+                }
+            });
+        }  else {
+            res.status(400).json({success: false, message: 'error nromal'});
         }
     });
 };
