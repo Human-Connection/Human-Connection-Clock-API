@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Human Connection Clock - Delete Entry</title>
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+        @import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+
+        body {
+            margin:      0 auto;
+            max-width:   50em;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size:   18px;
+            line-height: 1.5;
+            padding:     4em 1em;
+            color:       #555;
+        }
+
+        h1, h2 {
+            margin-top:  1em;
+            padding-top: 1em;
+            color:       #333;
+        }
+
+        p {
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+
+        hr {
+            border-color: #eee;
+        }
+
+        .btn {
+            font-size: 18px;
+            padding: 0.75em;
+            margin-right: 1em;
+            border-radius: 3px;
+        }
+        .btn-primary {
+            background-color: #e81c4f;
+            border:           #c41540;
+            color: #ffffff;
+        }
+        #logo {
+            text-align: center;
+        }
+
+        .message-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 2em 0;
+        }
+        .message-image {
+            height: 50px;
+            margin-right: 30px;
+        }
+        .message-image img {
+            object-fit: contain;
+            max-height: 50px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="logo">
+    <a href="https://human-connection.org/">
+        <img src="https://human-connection.org/wp-content/uploads/2019/12/HC-Logo-2020_Square_website_100x100px.svg"
+             srcset="https://human-connection.org/wp-content/uploads/2019/12/HC-Logo-2020_Square_website_100x100px.svg 1x"
+             alt="Human Connection Logo" data-retina_logo_url="" class="fusion-standard-logo" width="" height="">
+    </a>
+</div>
+<main>
+    <h1>Human Connection Clock - Delete Entry</h1>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/en.png" alt="English" title="English">
+        </div>
+        <div>
+            <p>You are about to delete your entry for the Human Connection Clock.</p>
+            <p>When you proceed, all data will be deleted and can't be recovered.</p>
+        </div>
+    </div>
+    <hr>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/fr.png" alt="English" title="Francais">
+        </div>
+        <div>
+            <p>Vous êtes en train de supprimer votre saisie pour l'horloge Human Connection </p>
+            <p>Si vous continuez, toutes vos données seront effacées et ne pourront pas être récupérées</p>
+        </div>
+    </div>
+    <hr>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/es.png" alt="English" title="Espanyol">
+        </div>
+        <div>
+            <p>Está a punto de borrar su entrada por el reloj Human Connection </p>
+            <p>Cuando proceda, todos los datos serán borrados y no podrán ser recuperados.</p>
+        </div>
+    </div>
+    <hr>
+    <div class="message-wrapper">
+        <div class="message-image">
+            <img src="/images/de.png" alt="English" title="Deutsch">
+        </div>
+        <div>
+            <p>Sie sind dabei Ihren Eintrag für die Human Connection Uhr zu löschen.</p>
+            <p>Wenn Sie fortfahren werden alle Ihre Daten gelöscht und können nicht wieder hergestellt werden.</p>
+        </div>
+    </div>
+    <br>
+    <p>
+        <a href="/entries/disable-delete/<%= hash %>"><button class="btn btn-primary">Delete / Supprimer / Borrar / Löschen</button></a>
+        <a href="https://human-connection.org/"><button class="btn btn-secondary">Abort / Abandonner / Abortar / Abbrechen</button></a>
+    </p>
+</main>
+</body>
+</html>
